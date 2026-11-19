@@ -4,12 +4,16 @@ Ky dokument shpjegon **çfarë ndërtojmë, me çfarë, dhe pse**. Janë rekoman
 
 ## 1. Vendimi i përgjithshëm
 
-Faqja është **kryesisht statike**: tekst, imazhe dhe animacione CSS. Pjesët dinamike janë të vogla dhe të jashtme (Shiny app, faqja e kurseve). Prandaj nuk na duhet server, bazë të dhënash ose llogari përdoruesish.
+> **Vendim i ri (nëntor 2026):** Ermiri kërkon panel admin me hyrje të mbrojtur, dhe përmbajtje (tekste, foto, PDF) që ndryshon pa prekur kod. Prandaj faqja **nuk është më vetëm statike**: përmbajtja jeton në **Cloudflare D1** (të dhëna) dhe **R2** (skedarë), faqet publike e lexojnë **direkt nga D1 në çdo kërkesë**, dhe `/admin` mbrohet nga **Cloudflare Access**. Pjesët e mëposhtme që thonë "statik" ose "JSON" vlejnë për gjendjen e mëparshme; ku ka kundërshti, ky paragraf mbizotëron. Seksionet 5 dhe 6 janë përditësuar në fund.
+
+Dizajni mbetet përmbajtje me shumë tekst dhe pak JS në shfletues. Pjesët dinamike janë: leximi nga D1, paneli `/admin`, ngarkimi në R2, dhe aplikacionet e jashtme (Shiny, faqja e kurseve).
 
 | Pjesa | Zgjedhja | Pse |
 |---|---|---|
-| Framework | **Astro** (output statik) + TypeScript | Përmbajtje me shumë tekst, JS minimal, ndërtim i shpejtë. Ermiri përdor Next.js në një projekt tjetër; mund të përdoret edhe ai, por është më e rëndë për faqe statike. |
-| Përmbajtja | Skedarë JSON/Markdown në `content/` (Astro Content Collections) | Ermiri e ndryshon pa prekur kodin; skemat verifikohen në ndërtim. |
+| Framework | **Astro** + adapteri Cloudflare (SSR) + TypeScript | Faqet publike lexojnë nga D1 në çdo kërkesë; JS minimal në shfletues. |
+| Përmbajtja | **D1** (burimi i së vërtetës). `content/*.json` mbeten vetëm si të dhëna fillestare (seed) dhe për skemat zod. | Panelet ndryshon përmbajtjen pa rindërtim. |
+| Skedarët | **R2** (PDF, foto) | Shih seksionin 5. |
+| Hyrja në `/admin` | **Cloudflare Access** | Pa sistem login-i të vetin. Kodi verifikon edhe kokën e Access. |
 | Stilet | CSS i thjeshtë me variabla nga `design/tokens.md` (ose Tailwind nëse Claude Code e sheh më të përshtatshme) | Dizajni ka shumë vlera të sakta inline; variablat i mbajnë të njëjta. |
 | JS në shfletues | Pothuajse asnjë. Vetëm butoni "Kopjo linkun" (clipboard). | Skena e kryefaqes dhe hover-at janë CSS i pastër. |
 | Hostimi | **Cloudflare Workers me Static Assets** | Shih seksionin 3. |

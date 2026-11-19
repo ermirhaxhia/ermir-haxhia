@@ -31,15 +31,26 @@
 - `/libraria` nga `Libra.dc.html` (rafte, kartela e kurseve me lidhje te nën-domeni).
 - **Përfundon kur:** të dyja përputhen me dizajnin dhe lexojnë nga `dosja.json` / `libra.json`.
 
-## M5b — Paneli admin (`/admin`)
-- CMS me Git (Keystatic ose Decap; verifiko dokumentimin aktual para se të zgjedhësh) mbi skemat e `content/*.json`.
-- Formularë për projekte, libra, punë të dosjes dhe faqe të fshehura; ngarkim fotosh (në repo) dhe PDF (Cloudflare R2).
-- Hyrje vetëm për Ermirin; repo private; `/admin` jo në sitemap dhe me `noindex`.
-- PDF me të drejta autori nuk dalin publike (shih `arkitektura.md`, seksioni 5).
-- **Përfundon kur:** Ermiri shton një projekt me foto dhe një libër me PDF nga paneli, dhe ato shfaqen në faqe pas rindërtimit pa prekur kod.
+## M5b — D1 dhe lexim direkt (vendim: faqet publike lexojnë nga D1 në çdo kërkesë)
+- Adapteri Cloudflare (SSR), `wrangler.jsonc`, lidhja me D1 (verifiko dokumentimin aktual para se të zgjedhësh versionet).
+- Skema D1 dhe migrime për: projekte, punë shkollore (lëndë, projekt, `shiny_url`…), dosja (seksione, punë), libra (rafte, libra), kontakt, rreth meje, faqe të fshehura (me kodin).
+- Skript "seed" që mbush D1 nga `content/*.json`; skemat zod mbeten për validim.
+- Faqet publike lexojnë nga D1 (në zhvillim: D1 lokale me `wrangler`, pa prekur llogarinë).
+- **Përfundon kur:** të gjitha faqet publike shfaqin të njëjtën përmbajtje nga D1 lokale si më parë nga JSON, dhe `npm run build` kalon.
 
-## M6 — Faqet e fshehura
-- `/p/[kod]` nga `faqe-te-fshehura.json`, `noindex`, jo në sitemap.
+## M5c — R2 dhe skedarët
+- Bucket R2 për PDF dhe foto; lidhja me Worker-in; adresë publike për foto dhe lidhje e kontrolluar për PDF.
+- PDF me të drejta autori nuk dalin publike (shih `arkitektura.md`, seksioni 5).
+- **Përfundon kur:** një foto dhe një PDF provë ngarkohen lokalisht dhe shfaqen në faqe.
+
+## M5d — Paneli admin (`/admin`) me Cloudflare Access
+- Formularë për projekte, libra, punë të dosjes, kontakt dhe faqe të fshehura; ngarkim skedarësh në R2; validim në server.
+- Hyrje vetëm për Ermirin: Cloudflare Access (email + kod një-përdorimësh) mbi `/admin/*` dhe API-n e tij. Kodi i panelit duhet të verifikojë edhe vetë kokën e Access, jo vetëm të mbështetet te rrjeti.
+- `/admin` jo në sitemap, me `noindex`.
+- **Përfundon kur:** Ermiri shton një projekt me foto dhe një libër me PDF nga paneli dhe ato shfaqen menjëherë në faqe, pa prekur kod; një vizitor pa hyrje nuk arrin te `/admin`.
+
+## M6 — Faqet e fshehura (bërë)
+- `/p/[kod]`, `noindex`, jo në sitemap. Pas M5b kodet jetojnë në D1, jo në repo.
 - **Përfundon kur:** një faqe provë hapet me kod dhe nuk del në sitemap, `robots.txt` ose lidhje.
 
 ## M7 — Cilësia
@@ -47,7 +58,8 @@
 - **Përfundon kur:** lista te `CLAUDE.md` ("Kontrolli para se të thuash gati") kalon e plotë.
 
 ## M8 — Publikimi (vetëm me konfirmim nga Ermiri)
-- Lidh repo-n me Cloudflare, deploy, domeni `www.ermir-haxhia.com`, ridrejtimi i domenit bosh.
+- Krijo te Cloudflare: D1, bucket R2 dhe Access për `/admin` (Ermiri i krijon ose i miraton).
+- Lidh repo-n me Cloudflare, deploy (fillimisht në `*.workers.dev`), pastaj domeni `www.ermir-haxhia.com` dhe ridrejtimi i domenit bosh.
 - **Përfundon kur:** faqja hapet në domenin real me HTTPS dhe Ermiri e ka konfirmuar.
 
 ## M9 — Pas publikimit

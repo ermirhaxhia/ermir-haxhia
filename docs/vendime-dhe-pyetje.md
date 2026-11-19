@@ -9,7 +9,10 @@
 | Faqet e fshehura = lidhje e pa-listuar | E mjaftueshme për pedagogun; jo siguri e vërtetë |
 | Faqja e kurseve mbetet e veçantë, në nën-domen, e lidhur nga Libraria | Ekziston si repo; nuk përzihet |
 | PDF librat: pak (6–7), pa bazë të dhënash | Kufijtë e D1 (2 MB për rresht) nuk përshtaten |
-| Stack: Astro + Cloudflare Workers Static Assets | Faqe kryesisht statike |
+| Stack: Astro + Cloudflare Workers (SSR) | Zëvendësoi "Static Assets" kur u vendos D1 (nëntor 2026) |
+| Përmbajtja në **D1**, skedarët në **R2**; faqet publike lexojnë direkt nga D1 | Kërkesë e Ermirit: panel admin, ndryshime pa rindërtim |
+| `/admin` mbrohet me Cloudflare Access; kodet e faqeve të fshehura jetojnë në D1 | Hyrje e vërtetë pa login të shkruar vetë; repo nuk mban më kode |
+| Domeni blihet te Cloudflare (Ermiri e blen); deploy fillimisht në `*.workers.dev` | Çmim "at-cost"; domeni nuk bllokon zhvillimin |
 | Shiny në shinyapps.io, i ngulitur me iframe | Cloudflare nuk ekzekuton R |
 
 ## Pyetje të hapura për Ermirin
