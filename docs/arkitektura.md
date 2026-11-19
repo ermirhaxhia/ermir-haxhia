@@ -4,7 +4,7 @@ Ky dokument shpjegon **çfarë ndërtojmë, me çfarë, dhe pse**. Janë rekoman
 
 ## 1. Vendimi i përgjithshëm
 
-> **Vendim i ri (nëntor 2026):** Ermiri kërkon panel admin me hyrje të mbrojtur, dhe përmbajtje (tekste, foto, PDF) që ndryshon pa prekur kod. Prandaj faqja **nuk është më vetëm statike**: përmbajtja jeton në **Cloudflare D1** (të dhëna) dhe **R2** (skedarë), faqet publike e lexojnë **direkt nga D1 në çdo kërkesë**, dhe `/admin` mbrohet nga **Cloudflare Access**. Pjesët e mëposhtme që thonë "statik" ose "JSON" vlejnë për gjendjen e mëparshme; ku ka kundërshti, ky paragraf mbizotëron. Seksionet 5 dhe 6 janë përditësuar në fund.
+> **Vendim i ri (nëntor 2026):** Ermiri kërkon panel admin me hyrje të mbrojtur, dhe përmbajtje (tekste, foto, PDF) që ndryshon pa prekur kod. Prandaj faqja **nuk është më vetëm statike**: përmbajtja jeton në **Cloudflare D1** (të dhëna) dhe **R2** (skedarë), faqet publike e lexojnë **direkt nga D1 në çdo kërkesë**, dhe `/admin` mbrohet nga **Cloudflare Access**. Pjesët e mëposhtme që thonë "statik" ose "JSON" vlejnë për gjendjen e mëparshme; ku ka kundërshti, ky paragraf mbizotëron. Seksionet 3 (hostimi), 5 (libra) dhe 6 (faqet e fshehura) ende përshkruajnë gjendjen e mëparshme dhe do të rishkruhen kur të ndërtohen M5b–M5d (p.sh. kodet e faqeve të fshehura do të jenë në D1, jo në `content/`).
 
 Dizajni mbetet përmbajtje me shumë tekst dhe pak JS në shfletues. Pjesët dinamike janë: leximi nga D1, paneli `/admin`, ngarkimi në R2, dhe aplikacionet e jashtme (Shiny, faqja e kurseve).
 
