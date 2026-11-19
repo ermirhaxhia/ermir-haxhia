@@ -9,6 +9,8 @@
     "directory": "./dist"
   },
   "observability": { "enabled": true },
+  // Skedarët (foto, PDF). Vetëm çelësat që fillojnë me "public/" shërbehen publikisht (shih src/pages/f/).
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "ermir-haxhia-files" }],
 
   "d1_databases": [
     {
