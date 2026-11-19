@@ -26,5 +26,8 @@
   },
   "overrides": {
     "vite": "7.3.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5"
   }
 }
