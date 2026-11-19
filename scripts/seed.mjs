@@ -1,10 +1,11 @@
-// Mbush bazën LOKALE të të dhënave nga content/*.json: npm run db:seed
-// Fshin dhe e mbush përsëri të gjithë përmbajtjen lokale. Nuk prek kurrë bazën te Cloudflare
-// (komanda përdor vetëm --local).
+// Mbush bazën e të dhënave nga content/*.json.
+//   npm run db:seed          -> bazën LOKALE (fshin dhe e mbush përsëri)
+//   npm run db:seed:remote   -> bazën te CLOUDFLARE, vetëm nëse është bosh (kurrë nuk fshin të dhëna)
 import { readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 
+const remote = process.argv.includes('--remote');
 const lexo = (rruga) => JSON.parse(readFileSync(join('content', rruga), 'utf8'));
 const q = (v) => (v === null || v === undefined ? 'NULL' : `'${String(v).replaceAll("'", "''")}'`);
 
@@ -13,8 +14,10 @@ const tabelat = [
   'faqe_fshehura', 'kurse_etiketat', 'kurse', 'libra', 'libra_rafte', 'dosja_punet', 'dosja_seksione',
   'projekte_shkolle', 'punet_shkolle', 'lendet', 'projekte', 'kontakt', 'rreth_fakte', 'rreth',
 ];
-for (const t of tabelat) sql.push(`DELETE FROM ${t};`);
-sql.push(`DELETE FROM sqlite_sequence;`);
+if (!remote) {
+  for (const t of tabelat) sql.push(`DELETE FROM ${t};`);
+  sql.push(`DELETE FROM sqlite_sequence;`);
+}
 
 const rreth = lexo('rreth.json');
 sql.push(`INSERT INTO rreth (id, teksti) VALUES (1, ${q(rreth.teksti)});`);
@@ -63,7 +66,16 @@ const skedari = join('.wrangler', 'seed.sql');
 writeFileSync(skedari, sql.join('\n') + '\n');
 console.log(`U gjeneruan ${sql.length} komanda SQL te ${skedari}`);
 
-execFileSync('npx', ['wrangler', 'd1', 'execute', 'DB', '--local', '--file', skedari], {
-  stdio: 'inherit',
-  shell: true,
-});
+const flamuri = remote ? '--remote' : '--local';
+const wrangler = (args) => execFileSync('npx', ['wrangler', ...args], { encoding: 'utf8', shell: true });
+
+if (remote) {
+  // Mbrojtje: mbush bazën e vërtetë vetëm nëse është bosh.
+  const pergjigja = wrangler(['d1', 'execute', 'DB', '--remote', '--json', '--command', '"SELECT count(*) AS c FROM rreth"']);
+  const c = JSON.parse(pergjigja.slice(pergjigja.indexOf('[')))[0]?.results?.[0]?.c;
+  if (c !== 0) {
+    console.error('Baza e vërtetë NUK është bosh (ose nuk u lexua). Nuk bëj asgjë, që të mos fshihen të dhëna.');
+    process.exit(1);
+  }
+}
+execFileSync('npx', ['wrangler', 'd1', 'execute', 'DB', flamuri, '--file', skedari], { stdio: 'inherit', shell: true });

@@ -12,7 +12,10 @@
     "db:migrate": "wrangler d1 migrations apply DB --local",
     "db:seed": "node scripts/seed.mjs",
     "types": "wrangler types",
-    "files:upload": "node scripts/ngarko.mjs"
+    "files:upload": "node scripts/ngarko.mjs",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "db:seed:remote": "node scripts/seed.mjs --remote",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",

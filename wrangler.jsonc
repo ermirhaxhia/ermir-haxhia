@@ -16,9 +16,7 @@
     {
       "binding": "DB",
       "database_name": "ermir-haxhia-db",
-      // PËRKOHËSISHT: id vendase për punë lokale. Zëvendësohet me id-në e vërtetë
-      // kur krijohet baza te Cloudflare (M8, vetëm me konfirmim nga Ermiri).
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "2935ea5c-49bd-4ca9-93ee-79acecc118b5",
       "migrations_dir": "migrations"
     }
   ]
