@@ -1,14 +1,17 @@
 ---
-// Faqet e fshehura: shablloni i Projekt.dc.html, pa lidhje nga faqet publike, noindex.
-// Pjesa tjetër (sitemap, robots, header) vjen te M6.
+// Faqet e fshehura (shablloni i Projekt.dc.html): lexohen nga D1 sipas kodit në adresë.
+// Pa lidhje nga faqet publike, noindex; kodi i gabuar jep 404 të zbrazët.
 import ProjektFaqe from '../../components/ProjektFaqe.astro';
-import { faqetFshehura } from '../../lib/content';
+import { getFaqeFshehur } from '../../lib/db';
 
-export function getStaticPaths() {
-  return faqetFshehura.map((f) => ({ params: { kodi: f.kodi }, props: { faqe: f } }));
-}
+const { kodi } = Astro.params;
+const faqe = kodi ? await getFaqeFshehur(kodi) : null;
+if (!faqe) return new Response(null, { status: 404, headers: { 'X-Robots-Tag': 'noindex, nofollow' } });
 
-const { faqe } = Astro.props;
+// Në SSR kokat vendosen këtu (nuk varemi nga public/_headers).
+Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+Astro.response.headers.set('Referrer-Policy', 'no-referrer');
+Astro.response.headers.set('Cache-Control', 'private, no-store');
 ---
 <ProjektFaqe
   title={faqe.titulli}

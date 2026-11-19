@@ -4,7 +4,9 @@ import PageHead from '../../../components/PageHead.astro';
 import Rresht from '../../../components/Rresht.astro';
 import Shenim from '../../../components/Shenim.astro';
 import Vlera from '../../../components/Vlera.astro';
-import { lendet } from '../../../lib/content';
+import { getLendet } from '../../../lib/db';
+
+const lendet = await getLendet();
 ---
 <Fletorja title="Shkollë — Fletorja e Ermirit" current="/fletorja/shkolle">
   <PageHead etiketa="Fletorja · 02" titulli="Shkollë">

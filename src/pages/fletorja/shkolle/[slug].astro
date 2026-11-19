@@ -1,17 +1,11 @@
 ---
-// Faqja e një projekti shkollor me Shiny app (design/pages/Projekt.dc.html).
+// Faqja e një projekti shkollor me Shiny app (design/pages/Projekt.dc.html). Lexon nga D1.
 import ProjektFaqe from '../../../components/ProjektFaqe.astro';
-import { lendet, projekteShkolle } from '../../../lib/content';
+import { getProjektShkolle } from '../../../lib/db';
 
-export function getStaticPaths() {
-  const slugs = lendet
-    .flatMap((l) => l.punet)
-    .filter((p) => p.ka_faqe && p.slug)
-    .map((p) => p.slug as string);
-  return slugs.map((slug) => ({ params: { slug }, props: { projekt: projekteShkolle[slug] } }));
-}
-
-const { projekt } = Astro.props;
+const { slug } = Astro.params;
+const projekt = slug ? await getProjektShkolle(slug) : null;
+if (!projekt) return new Response(null, { status: 404 });
 ---
 <ProjektFaqe
   title={`${projekt.titulli} — Fletorja e Ermirit`}

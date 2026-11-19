@@ -2,7 +2,9 @@
 import Fletorja from '../../layouts/Fletorja.astro';
 import PageHead from '../../components/PageHead.astro';
 import Vlera from '../../components/Vlera.astro';
-import { kontaktet } from '../../lib/content';
+import { getKontaktet } from '../../lib/db';
+
+const kontaktet = await getKontaktet();
 ---
 <Fletorja title="Kontakt — Fletorja e Ermirit" current="/fletorja/kontakt">
   <PageHead etiketa="Fletorja · 03" titulli="Kontakt">

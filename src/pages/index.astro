@@ -3,7 +3,9 @@
 import Base from '../layouts/Base.astro';
 import Skena from '../components/Skena.astro';
 import Vlera from '../components/Vlera.astro';
-import { rrethMeje, kontaktet } from '../lib/content';
+import { getRrethMeje, getKontaktet } from '../lib/db';
+
+const [rrethMeje, kontaktet] = await Promise.all([getRrethMeje(), getKontaktet()]);
 
 // Dizajni tregon vetëm këto tri te kryefaqja (Portfolio del te /fletorja/kontakt).
 const kontaktKryefaqe = kontaktet.filter((k) => ['GitHub', 'LinkedIn', 'Email'].includes(k.etiketa));

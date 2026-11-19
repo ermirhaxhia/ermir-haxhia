@@ -1,19 +1,9 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
+import cloudflare from '@astrojs/cloudflare';
 
-// Faqe statike. Domeni vendoset te M8 përmes variablës SITE_URL (shih .env.example);
-// pa të nuk gjenerohet sitemap.
-const site = process.env.SITE_URL || undefined;
-
+// Të gjitha faqet lexojnë nga D1 në çdo kërkesë, ndaj output është 'server'.
+// Sitemap: do të bëhet në M7 (faqet janë dinamike dhe @astrojs/sitemap nuk i sheh vetë).
 export default defineConfig({
-  output: 'static',
-  site,
-  integrations: site
-    ? [
-        sitemap({
-          // Faqet e fshehura nuk duhet të dalin kurrë në sitemap.
-          filter: (page) => !new URL(page).pathname.startsWith('/p/'),
-        }),
-      ]
-    : [],
+  output: 'server',
+  adapter: cloudflare(),
 });

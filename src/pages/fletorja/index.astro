@@ -4,7 +4,9 @@ import Fletorja from '../../layouts/Fletorja.astro';
 import Rresht from '../../components/Rresht.astro';
 import Shigjeta from '../../components/Shigjeta.astro';
 import Shenim from '../../components/Shenim.astro';
-import { lendet } from '../../lib/content';
+import { getLendet } from '../../lib/db';
+
+const lendet = await getLendet();
 
 // "Tani në punë": puna e parë shkollore që ka faqe të veçantë.
 const taniNePune = lendet.flatMap((l) => l.punet).find((p) => p.ka_faqe && p.slug);

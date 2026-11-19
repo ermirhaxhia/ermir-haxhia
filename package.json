@@ -4,16 +4,23 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro check && astro build",
+    "dev": "wrangler types && astro dev",
+    "build": "wrangler types && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "kodi": "node scripts/kodi.mjs"
+    "kodi": "node scripts/kodi.mjs",
+    "db:migrate": "wrangler d1 migrations apply DB --local",
+    "db:seed": "node scripts/seed.mjs",
+    "types": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",
-    "@astrojs/sitemap": "^3.7.6",
+    "@astrojs/cloudflare": "^13.7.0",
     "astro": "^6.4.8",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.165.0"
+  },
+  "overrides": {
+    "vite": "7.3.8"
   }
 }

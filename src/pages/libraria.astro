@@ -3,7 +3,9 @@
 import Base from '../layouts/Base.astro';
 import Vlera from '../components/Vlera.astro';
 import Shigjeta from '../components/Shigjeta.astro';
-import { librat } from '../lib/content';
+import { getLibrat } from '../lib/db';
+
+const librat = await getLibrat();
 
 const nr = (i: number) => String(i + 1).padStart(2, '0');
 // Etiketa e vogël mbi kapak: emri i rafit; raftet kraft mbajnë "Libër" (si në dizajn).
