@@ -1,0 +1,21 @@
+---
+// Faqet e fshehura: shablloni i Projekt.dc.html, pa lidhje nga faqet publike, noindex.
+// Pjesa tjetër (sitemap, robots, header) vjen te M6.
+import ProjektFaqe from '../../components/ProjektFaqe.astro';
+import { faqetFshehura } from '../../lib/content';
+
+export function getStaticPaths() {
+  return faqetFshehura.map((f) => ({ params: { kodi: f.kodi }, props: { faqe: f } }));
+}
+
+const { faqe } = Astro.props;
+---
+<ProjektFaqe
+  title={faqe.titulli}
+  noindex
+  fshehur
+  titulli={faqe.titulli}
+  pershkrimi={faqe.pershkrimi}
+  shinyUrl={faqe.shiny_url}
+  raportiUrl={faqe.raporti_pdf_url}
+/>

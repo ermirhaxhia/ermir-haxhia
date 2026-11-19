@@ -1,0 +1,13 @@
+---
+// Shfaq një vlerë nga content/*.json. Kur është null: vend bosh i dukshëm [ ... ].
+interface Props {
+  v: string | null | undefined;
+  href?: string | null;
+}
+const { v, href } = Astro.props;
+---
+{v == null
+  ? <span class="bosh" title="Ende pa vlerë">[ ... ]</span>
+  : href
+    ? <a href={href}>{v}</a>
+    : <Fragment>{v}</Fragment>}

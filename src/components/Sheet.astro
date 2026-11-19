@@ -1,0 +1,32 @@
+---
+// Fleta me vija: vija çdo 32px, margjina e kuqe, vrimat spirale.
+---
+<main class="sheet">
+  <div class="margin" aria-hidden="true"></div>
+  <div class="holes" aria-hidden="true"></div>
+  <slot />
+</main>
+
+<style>
+  .sheet {
+    position: relative;
+    background-color: var(--color-paper);
+    background-image: linear-gradient(to bottom, transparent 31px, var(--color-rule) 31px);
+    background-size: 100% var(--line);
+    background-repeat: repeat-y;
+    background-position: 0 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px 12px 12px 12px;
+    box-shadow: 0 18px 40px -24px rgba(30, 34, 48, 0.35);
+    padding: 56px clamp(20px, 5vw, 56px) 72px clamp(56px, 9vw, 112px);
+  }
+  .margin {
+    position: absolute; top: 0; bottom: 0; left: var(--margin-x); width: 2px;
+    background: var(--color-margin-red);
+  }
+  .holes {
+    position: absolute; top: 24px; bottom: 24px; left: 10px; width: 28px;
+    background-image: radial-gradient(circle at 50% 50%, var(--color-desk) 0 6px, var(--color-border) 6px 7px, transparent 7px);
+    background-size: 28px 64px; background-repeat: repeat-y;
+  }
+</style>

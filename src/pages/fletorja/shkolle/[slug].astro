@@ -1,0 +1,25 @@
+---
+// Faqja e një projekti shkollor me Shiny app (design/pages/Projekt.dc.html).
+import ProjektFaqe from '../../../components/ProjektFaqe.astro';
+import { lendet, projekteShkolle } from '../../../lib/content';
+
+export function getStaticPaths() {
+  const slugs = lendet
+    .flatMap((l) => l.punet)
+    .filter((p) => p.ka_faqe && p.slug)
+    .map((p) => p.slug as string);
+  return slugs.map((slug) => ({ params: { slug }, props: { projekt: projekteShkolle[slug] } }));
+}
+
+const { projekt } = Astro.props;
+---
+<ProjektFaqe
+  title={`${projekt.titulli} — Fletorja e Ermirit`}
+  kthehu={{ href: '/fletorja/shkolle', label: 'Shkollë' }}
+  etiketa={`${projekt.kategoria} · dorëzim ${projekt.afati.toLowerCase()}`}
+  titulli={projekt.titulli}
+  pershkrimi={projekt.pershkrimi}
+  shinyUrl={projekt.shiny_url}
+  raportiUrl={projekt.raporti_pdf_url}
+  linkuNdarje={projekt.linku_per_ndarje}
+/>

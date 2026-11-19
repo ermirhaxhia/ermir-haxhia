@@ -1,0 +1,96 @@
+---
+// Ballina e fletores (design/pages/Main.dc.html).
+import Fletorja from '../../layouts/Fletorja.astro';
+import Rresht from '../../components/Rresht.astro';
+import Shigjeta from '../../components/Shigjeta.astro';
+import Shenim from '../../components/Shenim.astro';
+import { lendet } from '../../lib/content';
+
+// "Tani në punë": puna e parë shkollore që ka faqe të veçantë.
+const taniNePune = lendet.flatMap((l) => l.punet).find((p) => p.ka_faqe && p.slug);
+
+const permbajtja = [
+  { nr: '01', href: '/fletorja/projekte', titulli: 'Projekte', pershkrimi: 'Punët dhe projektet e mia' },
+  { nr: '02', href: '/fletorja/shkolle', titulli: 'Shkollë', pershkrimi: 'Detyra dhe projekte sipas lëndëve' },
+  { nr: '03', href: '/fletorja/kontakt', titulli: 'Kontakt', pershkrimi: 'GitHub, LinkedIn, portfolio' },
+];
+---
+<Fletorja title="Fletorja e Ermirit — ballina" current="/fletorja">
+  <section class="koka">
+    <div class="etiketa">Fletorja · 2026</div>
+    <h1>Fletorja e <span class="hl">Ermirit</span></h1>
+    <p class="hyrje">Këtu i mbaj punët, projektet dhe detyrat e shkollës. Disa faqe janë të hapura për këdo. Të tjerat janë të fshehura dhe hapen vetëm me linkun që e jap unë.</p>
+    <div class="mono">Master në Matematikë të Aplikuar · analizë të dhënash · programim</div>
+  </section>
+
+  {taniNePune && (
+    <section class="bllok">
+      <div class="etiketa">Tani në punë</div>
+      <Rresht
+        data={taniNePune.data}
+        titulli={taniNePune.titulli}
+        pershkrimi={taniNePune.pershkrimi}
+        statusi={taniNePune.statusi}
+        href={`/fletorja/shkolle/${taniNePune.slug}`}
+      />
+    </section>
+  )}
+
+  <section class="bllok">
+    <div class="titull-seksioni"><span class="pike">•</span><h2>Përmbajtja</h2></div>
+    {permbajtja.map((p) => (
+      <a href={p.href} class="hyrje-lista">
+        <div class="rreshti-lart">
+          <span class="nr">{p.nr}</span>
+          <span class="emri">{p.titulli}</span>
+          <span class="pika" aria-hidden="true"></span>
+          <span class="hap">hap <Shigjeta /></span>
+        </div>
+        <div class="pershkrimi">{p.pershkrimi}</div>
+      </a>
+    ))}
+  </section>
+
+  <section class="bllok">
+    <div class="shenim-fshehur">
+      <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1E2230" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+      <div>
+        <div class="shenim-titull">Disa faqe nuk janë në këtë përmbajtje.</div>
+        <div class="shenim-tekst">Kanë adresë të veçantë dhe hapen vetëm me linkun që e ndaj unë. Nuk ka menu, nuk ka kërkim.</div>
+      </div>
+    </div>
+  </section>
+
+  <Shenim>faqet e fshehura nuk dalin kurrë në listë.</Shenim>
+</Fletorja>
+
+<style>
+  .koka { display: flex; flex-direction: column; }
+  .etiketa { font-family: var(--font-mono); font-size: 13px; line-height: 32px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+  h1 { margin: 0; font-size: clamp(34px, 5vw, 48px); line-height: 64px; font-weight: 650; letter-spacing: -0.025em; }
+  .hl { background: linear-gradient(transparent 58%, var(--color-highlight) 58%); }
+  .hyrje { margin: 0; max-width: 580px; font-size: 18px; line-height: 32px; text-wrap: pretty; }
+  .mono { font-family: var(--font-mono); font-size: 13px; line-height: 32px; color: var(--color-muted); }
+
+  .bllok { display: flex; flex-direction: column; margin-top: 64px; }
+
+  .titull-seksioni { display: flex; align-items: baseline; gap: 16px; }
+  .pike { font-family: var(--font-mono); font-size: 13px; line-height: 64px; color: var(--color-accent); }
+  h2 { margin: 0; font-size: 28px; line-height: 64px; font-weight: 650; letter-spacing: -0.02em; }
+
+  .hyrje-lista { display: block; min-height: 64px; text-decoration: none; color: inherit; }
+  .rreshti-lart { display: flex; align-items: baseline; gap: 12px; }
+  .nr { font-family: var(--font-mono); font-size: 13px; line-height: 32px; color: var(--color-accent); }
+  .emri { font-size: 18px; line-height: 32px; font-weight: 600; }
+  .pika { flex: 1 1 auto; min-width: 24px; border-bottom: 2px dotted #9AA0B0; position: relative; top: -6px; }
+  .hap { font-family: var(--font-mono); font-size: 13px; line-height: 32px; color: var(--color-accent); display: inline-flex; align-items: center; gap: 6px; }
+  .pershkrimi { padding-left: 36px; font-size: 15px; line-height: 32px; color: var(--color-muted); }
+
+  .shenim-fshehur {
+    max-width: 620px; padding: 28px 32px; background: var(--color-paper-warm); border: 1.5px dashed var(--color-dashed);
+    border-radius: 6px; transform: rotate(-0.5deg); display: flex; gap: 20px; align-items: flex-start;
+  }
+  .shenim-fshehur svg { flex: none; margin-top: 2px; }
+  .shenim-titull { font-size: 17px; line-height: 28px; font-weight: 600; }
+  .shenim-tekst { margin-top: 8px; font-size: 15px; line-height: 24px; color: var(--color-muted-strong); text-wrap: pretty; }
+</style>

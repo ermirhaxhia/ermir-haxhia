@@ -1,0 +1,28 @@
+---
+import Base from './Base.astro';
+import Tabs from '../components/Tabs.astro';
+import Sheet from '../components/Sheet.astro';
+
+interface Props {
+  title: string;
+  current?: string;
+  description?: string;
+}
+const { title, current, description } = Astro.props;
+---
+<Base title={title} description={description}>
+  <div class="wrap">
+    <div class="inner">
+      <Tabs current={current} />
+      <Sheet><slot /></Sheet>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .wrap {
+    padding: 32px clamp(12px, 3vw, 32px) 64px;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .inner { width: 100%; max-width: 1040px; display: flex; flex-direction: column; }
+</style>

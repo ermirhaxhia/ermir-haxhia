@@ -1,0 +1,70 @@
+/* Variablat vijnë nga design/tokens.md */
+:root {
+  --color-desk: #E9E6DF;
+  --color-paper: #FDFCF8;
+  --color-paper-warm: #F6F3EA;
+  --color-tab-idle: #F0EDE4;
+  --color-ink: #1E2230;
+  --color-muted: #5A6072;
+  --color-muted-strong: #4A5062;
+  --color-rule: #DCE1EA;
+  --color-grid: #E4E8EF;
+  --color-margin-red: #E5A0A0;
+  --color-border: #CFCAC0;
+  --color-accent: #2F4FA3;
+  --color-highlight: #F7E58B;
+  --color-sticky-ink: #3A3320;
+  --color-navy: #232B4A;
+  --color-navy-ink: #F3F1EA;
+  --color-kraft: #C9A56E;
+  --color-kraft-dark: #B8935A;
+  --color-kraft-ink: #2B2113;
+  --color-sage: #4F6B5A;
+  --color-sage-light: #A9BFB0;
+  --color-sage-ink: #1E2A22;
+  --color-gold: #D9C58A;
+  --color-index-red: #D96B6B;
+  --color-dashed: #7A8093;
+
+  --font-sans: Inter, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-hand: Caveat, cursive;
+
+  --line: 32px;
+  --margin-x: clamp(40px, 8vw, 88px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-desk);
+  background-image: radial-gradient(rgba(30, 34, 48, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+}
+
+a { color: inherit; }
+a:hover { color: var(--color-accent); }
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Vlerë e pa plotësuar (null në content/*.json) */
+.bosh { color: var(--color-muted-strong); font-family: var(--font-mono); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

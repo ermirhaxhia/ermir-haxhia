@@ -1,0 +1,31 @@
+{
+  "seksionet": [
+    {
+      "id": "powerbi",
+      "titulli": "Power BI",
+      "mjeti": "Power BI",
+      "punet": [
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null },
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null }
+      ]
+    },
+    {
+      "id": "excel",
+      "titulli": "Excel",
+      "mjeti": "Excel",
+      "punet": [
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null },
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null }
+      ]
+    },
+    {
+      "id": "analiza",
+      "titulli": "Analizë të dhënash",
+      "mjeti": "Analizë",
+      "punet": [
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null },
+        { "pamje": null, "data": null, "titulli": null, "pershkrimi": null, "url": null }
+      ]
+    }
+  ]
+}

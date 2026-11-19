@@ -1,0 +1,186 @@
+---
+// Skena e kryefaqes: fletorja, libri, dosja dhe stilolapsi mbi tavolinë.
+// Vetëm HTML dhe CSS. Vlerat vijnë nga design/tokens.md (seksioni "Skena e kryefaqes").
+import Shigjeta from './Shigjeta.astro';
+---
+<div class="skena">
+  <!-- Fletorja -->
+  <div class="drop" style="left: 1%; top: 9%; width: 43%; z-index: 1; animation-delay: 0.25s; --r: -5deg">
+    <a class="obj" href="/fletorja" aria-label="Hap fletoren">
+      <div class="lift">
+        <div class="trupi" style="aspect-ratio: 3 / 4">
+          <div class="brendesia fletore" aria-hidden="true">
+            <div class="mono">Shënime</div>
+            <div class="rresht-teksti">Projekt në R + Shiny app</div>
+            <div class="mono blu">dorëzim · janar</div>
+          </div>
+          <div class="cover navy" aria-hidden="true">
+            <div class="kurriz" style="width: 7%; border-radius: 3px 0 0 3px"></div>
+            <div class="qepje"></div>
+            <div class="rrip"></div>
+            <div class="etiketa-kapak">
+              <div class="mono">Fletorja · Nr. 01</div>
+              <div class="titull-kapak">Fletorja<br />e <span class="theks">Ermirit</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="tagx" style="top: -14px; left: -8px; --tr: -4deg">Fletorja <Shigjeta /></span>
+    </a>
+  </div>
+
+  <!-- Libri -->
+  <div class="drop" style="left: 65%; top: 0; width: 34%; z-index: 1; animation-delay: 0.35s; --r: 6deg">
+    <a class="obj" href="/libraria" aria-label="Hap librarinë">
+      <div class="lift">
+        <div class="trupi" style="aspect-ratio: 2 / 3">
+          <div class="brendesia liber" aria-hidden="true">
+            <div class="mono">Libraria</div>
+            <div class="rresht-teksti">Python</div>
+            <div class="rresht-teksti">R</div>
+            <div class="rresht-teksti">SQL · ML</div>
+          </div>
+          <div class="cover sage" aria-hidden="true">
+            <div class="kurriz" style="width: 9%; border-radius: 3px 0 0 3px; border-right: 1px solid rgba(255,255,255,0.18)"></div>
+            <div style="position: absolute; top: 5%; bottom: 5%; left: 15%; right: 7%; border: 1.5px solid #D9C58A; border-radius: 2px"></div>
+            <div style="position: absolute; top: 7%; bottom: 7%; left: 17%; right: 9%; border: 1px solid rgba(217,197,138,0.5); border-radius: 2px"></div>
+            <div class="qender-liber">
+              <div class="mono" style="color: #DDE6DF; font-size: clamp(7px, 1.4cqw, 10px)">Nr. 03</div>
+              <div class="titull-liber">Libraria</div>
+              <div style="width: 36%; border-top: 1.5px solid #D9C58A"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="tagx" style="top: -14px; right: -6px; --tr: 3deg">Libraria <Shigjeta /></span>
+    </a>
+  </div>
+
+  <!-- Stilolapsi -->
+  <div class="drop" aria-hidden="true" style="left: 1%; bottom: 8%; width: 40%; z-index: 2; animation-delay: 0.7s">
+    <div class="stilolaps">
+      <div style="width: 22%; height: 3cqw; background: #2F4FA3; border-radius: 6px 2px 2px 6px"></div>
+      <div style="flex: 1 1 auto; height: 2.6cqw; background: #1E2230"></div>
+      <div style="width: 0; height: 0; border-left: 3.4cqw solid #C9A56E; border-top: 1.3cqw solid transparent; border-bottom: 1.3cqw solid transparent"></div>
+    </div>
+  </div>
+
+  <!-- Dosja -->
+  <div class="drop" style="left: 31%; top: 55%; width: 64%; z-index: 3; animation-delay: 0.45s; --r: 3deg">
+    <a class="obj" href="/dosja" aria-label="Hap dosjen">
+      <div class="lift">
+        <div class="trupi" style="aspect-ratio: 4 / 3">
+          <div class="flete flete2" aria-hidden="true"></div>
+          <div class="flete flete1" aria-hidden="true">
+            <div class="mono" style="line-height: 1.5; padding-top: 1%; color: #4A5062">Power BI<br />Excel<br />Analizë</div>
+            <svg width="34%" viewBox="0 0 60 36" fill="none" style="margin-top: 1%"><rect x="2" y="20" width="8" height="14" fill="#2F4FA3" /><rect x="15" y="12" width="8" height="22" fill="#2F4FA3" /><rect x="28" y="16" width="8" height="18" fill="#2F4FA3" /><rect x="41" y="4" width="8" height="30" fill="#F7B93B" /><path d="M0 35h60" stroke="#9AA0B0" /></svg>
+          </div>
+          <div aria-hidden="true" style="position: absolute; top: -10%; left: 0; width: 36%; height: 11%; background: #B8935A; border-radius: 10px 10px 0 0"></div>
+          <div class="mono" aria-hidden="true" style="position: absolute; top: -8%; left: 3.5%; font-size: clamp(8px, 1.6cqw, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: #2B2113">Dosja · Nr. 02</div>
+          <div class="dosje-trup" aria-hidden="true"></div>
+          <div aria-hidden="true" style="position: absolute; inset: 4.5%; border: 2px dashed rgba(43,33,19,0.3); border-radius: 0 8px 8px 8px"></div>
+          <div class="dosje-etiketa" aria-hidden="true">
+            <div class="mono" style="font-size: clamp(7px, 1.5cqw, 11px)">Analiza · Nr. 02</div>
+            <div class="titull-kapak">Dosja e<br /><span class="theks">analizave</span></div>
+          </div>
+        </div>
+      </div>
+      <span class="tagx" style="bottom: -16px; right: 6%; --tr: 2deg">Dosja <Shigjeta /></span>
+    </a>
+  </div>
+</div>
+
+<style>
+  .skena { position: relative; width: 100%; aspect-ratio: 1 / 1.04; container-type: inline-size; }
+  .drop { position: absolute; animation: drop 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+  @keyframes drop {
+    from { opacity: 0; transform: translateY(-70px) scale(1.08); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .obj { display: block; position: relative; text-decoration: none; color: inherit; }
+  .obj:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 6px; border-radius: 8px; }
+  .lift { position: relative; transform: rotate(var(--r)); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .trupi { position: relative; width: 100%; perspective: 1400px; }
+
+  .mono {
+    font-family: var(--font-mono); font-size: clamp(8px, 1.8cqw, 12px); line-height: 3.4cqw;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted);
+  }
+  .mono.blu { color: var(--color-accent); text-transform: none; letter-spacing: 0; }
+  .rresht-teksti { font-size: clamp(10px, 2.4cqw, 16px); line-height: 3.4cqw; font-weight: 600; color: var(--color-ink); }
+
+  .brendesia {
+    position: absolute; inset: 0; background-color: var(--color-paper);
+    background-image: linear-gradient(to bottom, transparent calc(100% - 1px), var(--color-rule) calc(100% - 1px));
+    background-size: 100% 3.4cqw; border-radius: 3px 10px 10px 3px;
+  }
+  .brendesia.fletore { background-position: 0 4.4cqw; padding: 16% 8% 0 17%; box-shadow: 4px 4px 0 #CFCAC0, 0 34px 40px -22px rgba(30, 34, 48, 0.6); }
+  .brendesia.liber { background-position: 0 5.2cqw; padding: 20% 8% 0 18%; box-shadow: 5px 5px 0 #FDFCF8, 6px 6px 0 #CFCAC0, 0 34px 40px -22px rgba(30, 34, 48, 0.6); }
+
+  .cover {
+    position: absolute; inset: 0; border-radius: 3px 10px 10px 3px; transform-origin: left center;
+    box-shadow: 0 34px 40px -22px rgba(30, 34, 48, 0.6); transition: transform 0.65s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .cover.navy {
+    background-color: var(--color-navy);
+    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.035) 0 1px, transparent 1px 3px), repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 3px);
+  }
+  .cover.sage { background-color: var(--color-sage); background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px); }
+  .kurriz { position: absolute; top: 0; bottom: 0; left: 0; background: rgba(0, 0, 0, 0.28); }
+  .qepje { position: absolute; top: 3%; bottom: 3%; left: 3.5%; border-left: 2px dashed rgba(255, 255, 255, 0.35); }
+  .rrip { position: absolute; top: -1%; bottom: -1%; right: 14%; width: 4%; background: linear-gradient(90deg, #0F121C, #1B2030 50%, #0F121C); }
+  .etiketa-kapak {
+    position: absolute; left: 14%; right: 24%; top: 20%; padding: 6% 6% 5%; background: var(--color-paper);
+    border: 1px solid var(--color-border); border-radius: 3px; display: flex; flex-direction: column; gap: 4cqw;
+  }
+  .etiketa-kapak .mono { font-size: clamp(7px, 1.5cqw, 11px); line-height: normal; letter-spacing: 0.1em; }
+  .titull-kapak { font-size: clamp(14px, 4.4cqw, 30px); line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; color: var(--color-ink); }
+  .theks { background: linear-gradient(transparent 58%, var(--color-highlight) 58%); }
+  .qender-liber {
+    position: absolute; top: 7%; bottom: 7%; left: 17%; right: 9%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 4cqw; text-align: center;
+  }
+  .qender-liber .mono { line-height: normal; letter-spacing: 0.1em; }
+  .titull-liber { font-size: clamp(14px, 3.8cqw, 26px); line-height: 1.1; font-weight: 700; letter-spacing: -0.025em; color: #F6F1DF; }
+
+  .stilolaps { display: flex; align-items: center; transform: rotate(-14deg); filter: drop-shadow(0 8px 6px rgba(30, 34, 48, 0.35)); }
+
+  .flete { position: absolute; border: 1px solid var(--color-border); border-radius: 3px; transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .flete2 { left: 9%; right: 11%; top: -12%; height: 70%; background: var(--color-paper-warm); transform: rotate(-1.4deg); }
+  .flete1 {
+    left: 6%; right: 7%; top: -8%; height: 70%; background: #fff; transform: rotate(0.8deg);
+    padding: 2% 4% 0 42%; display: flex; align-items: flex-start; justify-content: space-between; gap: 3%;
+  }
+  .flete1 .mono { text-transform: none; letter-spacing: 0; }
+  .dosje-trup {
+    position: absolute; inset: 0; background-color: var(--color-kraft);
+    background-image: repeating-linear-gradient(0deg, rgba(43,33,19,0.04) 0 1px, transparent 1px 3px);
+    border-radius: 0 12px 12px 12px; box-shadow: 0 34px 40px -22px rgba(30, 34, 48, 0.55); border-top: 2px solid var(--color-kraft-dark);
+  }
+  .dosje-etiketa {
+    position: absolute; left: 11%; top: 24%; width: 60%; padding: 4% 4.5% 3.5%; background: var(--color-paper);
+    border: 1px solid var(--color-kraft-dark); border-radius: 3px; transform: rotate(-1deg);
+    display: flex; flex-direction: column; gap: 2.4cqw;
+  }
+  .dosje-etiketa .mono { line-height: normal; letter-spacing: 0.1em; }
+
+  .tagx {
+    position: absolute; z-index: 6; display: inline-flex; align-items: center; gap: 8px; min-height: 34px;
+    padding: 0 14px; background: var(--color-paper); border: 1px solid var(--color-border); border-radius: 999px;
+    box-shadow: 0 8px 14px -10px rgba(30, 34, 48, 0.55); font-family: var(--font-mono); font-size: 12px;
+    letter-spacing: 0.04em; color: var(--color-ink); white-space: nowrap; transition: transform 0.3s ease; transform: rotate(var(--tr));
+  }
+
+  /* Hover / fokus nga tastiera */
+  .obj:hover .lift, .obj:focus-visible .lift { transform: translateY(-2.6cqw) rotate(calc(var(--r) * 0.3)); }
+  .obj:hover .cover, .obj:focus-visible .cover { transform: rotateY(-36deg); }
+  .obj:hover .flete1, .obj:focus-visible .flete1 { transform: translateY(-30%) rotate(-3deg); }
+  .obj:hover .flete2, .obj:focus-visible .flete2 { transform: translateY(-18%) rotate(2deg); }
+  .obj:hover .tagx, .obj:focus-visible .tagx { transform: translateY(-3px) rotate(var(--tr)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .drop { animation: none !important; }
+    .lift, .cover, .flete, .tagx { transition: none !important; }
+  }
+</style>

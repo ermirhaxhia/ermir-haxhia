@@ -1,0 +1,22 @@
+---
+import Fletorja from '../../layouts/Fletorja.astro';
+import PageHead from '../../components/PageHead.astro';
+import Rresht from '../../components/Rresht.astro';
+import Shenim from '../../components/Shenim.astro';
+import { projektet } from '../../lib/content';
+---
+<Fletorja title="Projekte — Fletorja e Ermirit" current="/fletorja/projekte">
+  <PageHead etiketa="Fletorja · 01" titulli="Projekte">
+    Çfarë ndërtoj vetë, nga idea deri te rezultati.
+  </PageHead>
+  <section class="lista">
+    {projektet.map((p) => (
+      <Rresht data={p.data} titulli={p.titulli} pershkrimi={p.pershkrimi} statusi={p.statusi} href={p.url} />
+    ))}
+  </section>
+  <Shenim>një projekt i ri = një rresht i ri.</Shenim>
+</Fletorja>
+
+<style>
+  .lista { display: flex; flex-direction: column; margin-top: 64px; }
+</style>

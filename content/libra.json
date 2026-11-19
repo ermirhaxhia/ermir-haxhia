@@ -1,0 +1,34 @@
+{
+  "rafte": [
+    {
+      "titulli": "Python",
+      "ngjyra": "navy",
+      "libra": [
+        { "titulli": null, "autori": null, "statusi": "duke lexuar", "formati": "PDF", "skedari": null, "licenca": null },
+        { "titulli": null, "autori": null, "statusi": "për t'u lexuar", "formati": "Fizik", "skedari": null, "licenca": null }
+      ]
+    },
+    {
+      "titulli": "R",
+      "ngjyra": "sage",
+      "libra": [
+        { "titulli": null, "autori": null, "statusi": "duke lexuar", "formati": "PDF", "skedari": null, "licenca": null },
+        { "titulli": null, "autori": null, "statusi": "për t'u lexuar", "formati": "Fizik", "skedari": null, "licenca": null }
+      ]
+    },
+    {
+      "titulli": "Libra të tjerë",
+      "ngjyra": "kraft",
+      "libra": [
+        { "titulli": null, "autori": null, "statusi": "duke lexuar", "formati": "PDF", "skedari": null, "licenca": null },
+        { "titulli": null, "autori": null, "statusi": "për t'u lexuar", "formati": "Fizik", "skedari": null, "licenca": null }
+      ]
+    }
+  ],
+  "kurse": {
+    "titulli": "Kurse · Data Analyst, ML, SQL",
+    "pershkrimi": null,
+    "url": null,
+    "etiketat": ["Data Analyst", "Machine Learning", "SQL"]
+  }
+}

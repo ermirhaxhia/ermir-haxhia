@@ -1,0 +1,37 @@
+---
+import Fletorja from '../../../layouts/Fletorja.astro';
+import PageHead from '../../../components/PageHead.astro';
+import Rresht from '../../../components/Rresht.astro';
+import Shenim from '../../../components/Shenim.astro';
+import Vlera from '../../../components/Vlera.astro';
+import { lendet } from '../../../lib/content';
+---
+<Fletorja title="Shkollë — Fletorja e Ermirit" current="/fletorja/shkolle">
+  <PageHead etiketa="Fletorja · 02" titulli="Shkollë">
+    Detyrat dhe projektet, të ndara sipas lëndës.
+  </PageHead>
+  {lendet.map((l, i) => (
+    <section class:list={['lenda', { first: i === 0 }]}>
+      <div class="emri"><Vlera v={l.lenda} /></div>
+      {l.punet.map((p) => (
+        <Rresht
+          data={p.data}
+          titulli={p.titulli}
+          pershkrimi={p.pershkrimi}
+          statusi={p.statusi}
+          href={p.ka_faqe && p.slug ? `/fletorja/shkolle/${p.slug}` : null}
+        />
+      ))}
+    </section>
+  ))}
+  <Shenim>projekti me tag-un “hap” ka faqe të veçantë.</Shenim>
+</Fletorja>
+
+<style>
+  .lenda { display: flex; flex-direction: column; margin-top: 32px; }
+  .lenda.first { margin-top: 64px; }
+  .emri {
+    align-self: flex-start; margin-bottom: 32px; font-family: var(--font-mono); font-size: 13px; line-height: 32px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink); border-bottom: 2px solid var(--color-ink);
+  }
+</style>
