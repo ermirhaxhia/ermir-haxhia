@@ -206,3 +206,39 @@ export async function listoSkedaret(): Promise<SkedarNeR2[]> {
     .map((o) => ({ celesi: o.key, madhesia: o.size, ngarkuar: o.uploaded }))
     .sort((a, b) => b.ngarkuar.getTime() - a.ngarkuar.getTime());
 }
+
+export interface Detyre {
+  tekst: string;
+  lidhja: string;
+}
+
+/** Çfarë mbetet ende bosh në faqe, në gjuhë të thjeshtë, me lidhje drejt vendit ku rregullohet. */
+export async function detyratEMbetura(): Promise<Detyre[]> {
+  const [kontakt, projekte, lendet, dosja, libra, shiny, kurse] = await env.DB.batch([
+    env.DB.prepare("SELECT etiketa FROM kontakt WHERE vlera IS NULL OR vlera = '' OR url IS NULL OR url = '' ORDER BY renditja"),
+    env.DB.prepare('SELECT count(*) AS c FROM projekte WHERE titulli IS NULL'),
+    env.DB.prepare('SELECT count(*) AS c FROM lendet WHERE lenda IS NULL'),
+    env.DB.prepare('SELECT count(*) AS c FROM dosja_punet WHERE titulli IS NULL'),
+    env.DB.prepare('SELECT count(*) AS c FROM libra WHERE titulli IS NULL'),
+    env.DB.prepare("SELECT titulli FROM projekte_shkolle WHERE shiny_url IS NULL OR shiny_url = ''"),
+    env.DB.prepare('SELECT count(*) AS c FROM kurse WHERE url IS NULL'),
+  ]);
+  const num = (r: { results: unknown[] }) => (r.results[0] as { c: number } | undefined)?.c ?? 0;
+  const detyra: Detyre[] = [];
+  for (const k of kontakt.results as { etiketa: string }[]) {
+    detyra.push({ tekst: `Plotëso kontaktin "${k.etiketa}" (tekstin dhe lidhjen)`, lidhja: '/admin/kontakt' });
+  }
+  const p = num(projekte);
+  if (p > 0) detyra.push({ tekst: `${p} ${p === 1 ? 'projekt ka' : 'projekte kanë'} ende pa emër`, lidhja: '/admin/projekte' });
+  const l = num(lendet);
+  if (l > 0) detyra.push({ tekst: `${l} ${l === 1 ? 'lëndë nuk ka' : 'lëndë nuk kanë'} emër te Shkollë`, lidhja: '/admin/lendet' });
+  for (const s of shiny.results as { titulli: string }[]) {
+    detyra.push({ tekst: `Shto adresën e aplikacionit Shiny për "${s.titulli}"`, lidhja: '/admin/projekte-shkolle' });
+  }
+  const d = num(dosja);
+  if (d > 0) detyra.push({ tekst: `${d} ${d === 1 ? 'kartelë në Dosje është' : 'kartela në Dosje janë'} ende bosh (foto, titull)`, lidhja: '/admin/dosja-punet' });
+  const b = num(libra);
+  if (b > 0) detyra.push({ tekst: `${b} ${b === 1 ? 'libër nuk ka' : 'libra nuk kanë'} titull`, lidhja: '/admin/libra' });
+  if (num(kurse) > 0) detyra.push({ tekst: 'Shto adresën e faqes së kurseve', lidhja: '/admin/kurse' });
+  return detyra;
+}

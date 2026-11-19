@@ -53,8 +53,10 @@
 - `/p/[kod]`, `noindex`, jo në sitemap. Pas M5b kodet jetojnë në D1, jo në repo.
 - **Përfundon kur:** një faqe provë hapet me kod dhe nuk del në sitemap, `robots.txt` ose lidhje.
 
-## M7 — Cilësia
-- Aksesueshmëri (tastierë, kontrast, fokus), Lighthouse ≥ 90, imazhe, meta/OG, 404.
+## M7 — Cilësia (kryesisht bërë)
+- **Bërë:** faqja 404 (identike për kodet e fshehura të gabuara), sitemap dinamik (pa /p/ dhe /admin), robots.txt, canonical dhe Open Graph me imazh, ikona e skedës, lidhja "Kalo te përmbajtja", <main> në çdo faqe, koka sigurie, kontrolli i kontrastit WCAG (të gjitha çiftet kalojnë), matje pa tejkalim horizontal në 320/360/390/440 px për 13 faqe, Lighthouse 95–100 në çdo kategori.
+- **Mbetet:** cenueshmëritë npm te Astro (zgjidhja është Astro 7 + Node ≥ 22.23.4; shih shënimin më poshtë), fontet nga Google (bllokojnë renderimin ~380 ms; mund të vetë-hostohen), prova me tastierë dhe lexues ekrani nga një njeri, prova e hover-it në shfletues të vërtetë.
+- **Shënim për npm audit:** advisory-të janë te Astro <= 7.4.6 (XSS te transition/JSX/MDX, RCE te optimizimi AVIF, adapteri Node). Faqja nuk përdor asnjërën (optimizimi i fotove është çaktivizuar, pa MDX/transicione), por rregullimi i plotë kërkon Astro 7 dhe Node më të ri lokalisht.
 - **Përfundon kur:** lista te `CLAUDE.md` ("Kontrolli para se të thuash gati") kalon e plotë.
 
 ## M8 — Publikimi (vetëm me konfirmim nga Ermiri)

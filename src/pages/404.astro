@@ -1,0 +1,26 @@
+---
+// Faqja 404 (edhe për kodet e gabuara të faqeve të fshehura: pamja është e njëjtë, që të mos zbulohet asgjë).
+import Faqe from '../layouts/Faqe.astro';
+Astro.response.status = 404;
+Astro.response.headers.set('X-Robots-Tag', 'noindex');
+---
+<Faqe title="Faqja nuk u gjet — Ermir Haxhia" noindex>
+  <p class="etiketa">Gabim 404</p>
+  <h1>Faqja nuk u <span class="hl">gjet</span></h1>
+  <p class="tekst">Adresa mund të jetë shkruar gabim, ose faqja nuk ekziston më. Provo një nga këto:</p>
+  <nav aria-label="Faqet kryesore">
+    <a href="/">Kryefaqja</a>
+    <a href="/fletorja">Fletorja</a>
+    <a href="/dosja">Dosja</a>
+    <a href="/libraria">Libraria</a>
+  </nav>
+</Faqe>
+
+<style>
+  .etiketa { margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 32px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+  h1 { margin: 0; font-size: clamp(34px, 5vw, 48px); line-height: 64px; font-weight: 650; letter-spacing: -0.025em; }
+  .hl { background: linear-gradient(transparent 58%, var(--color-highlight) 58%); }
+  .tekst { margin: 0; max-width: 580px; font-size: 18px; line-height: 32px; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 32px; }
+  nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 18px; font-weight: 600; }
+</style>

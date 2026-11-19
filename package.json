@@ -16,7 +16,8 @@
     "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
     "db:seed:remote": "node scripts/seed.mjs --remote",
     "deploy": "npm run build && wrangler deploy",
-    "test:access": "node scripts/test-access.mjs"
+    "test:access": "node scripts/test-access.mjs",
+    "db:backup": "node scripts/backup.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.12",

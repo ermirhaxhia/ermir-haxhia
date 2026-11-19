@@ -1,5 +1,5 @@
 ---
-// Guaska e panelit /admin. Pa fonte të jashtme dhe pa JavaScript (CSP e kufizon).
+// Guaska e panelit /admin: menu anësore (në telefon bëhet menu që hapet), pa fonte të jashtme.
 import { entitetet } from '../lib/admin-config';
 
 interface Props {
@@ -19,81 +19,175 @@ const email = Astro.locals.admin?.email;
     <title>{titulli} — Paneli</title>
   </head>
   <body>
-    <header class="krye">
-      <a class="logo" href="/admin">Paneli</a>
-      <nav aria-label="Seksionet">
-        {grupet.map((g) => (
-          <div class="grupi">
-            <span class="grupi-emri">{g}</span>
-            {entitetet.filter((e) => e.grupi === g).map((e) => (
-              <a href={`/admin/${e.id}`} aria-current={aktiv === e.id ? 'page' : undefined}>{e.titulli}</a>
+    <a class="kalo" href="#permbajtja">Kalo te përmbajtja</a>
+    <div class="guaska">
+      <aside class="anash">
+        <details class="menu" open>
+          <summary>
+            <a class="logo" href="/admin"><span class="logo-shenja" aria-hidden="true">E</span> Paneli i faqes</a>
+            <span class="menu-buton">Menuja</span>
+          </summary>
+          <nav aria-label="Seksionet">
+            <a class="lidhje-kryesore" href="/admin" aria-current={aktiv === 'ballina' ? 'page' : undefined}>Ballina</a>
+            {grupet.map((g) => (
+              <div class="grupi">
+                <div class="grupi-emri">{g}</div>
+                {entitetet.filter((e) => e.grupi === g).map((e) => (
+                  <a href={`/admin/${e.id}`} aria-current={aktiv === e.id ? 'page' : undefined}>{e.titulli}</a>
+                ))}
+              </div>
             ))}
-          </div>
-        ))}
-        <div class="grupi">
-          <span class="grupi-emri">Skedarët</span>
-          <a href="/admin/skedaret" aria-current={aktiv === 'skedaret' ? 'page' : undefined}>Foto dhe PDF</a>
-        </div>
-      </nav>
-      <div class="djathtas">
-        {email && <span class="email">{email}</span>}
-        <a href="/" target="_blank" rel="noopener">Hap faqen ↗</a>
+            <div class="grupi">
+              <div class="grupi-emri">Skedarët</div>
+              <a href="/admin/skedaret" aria-current={aktiv === 'skedaret' ? 'page' : undefined}>Foto dhe PDF</a>
+            </div>
+          </nav>
+        </details>
+      </aside>
+
+      <div class="kolona">
+        <header class="krye">
+          <a class="hap-faqen" href="/" target="_blank" rel="noopener">Shiko faqen ↗</a>
+          {email && <span class="perdoruesi" title="I identifikuar si">{email}</span>}
+        </header>
+        <main id="permbajtja"><slot /></main>
       </div>
-    </header>
-    <main><slot /></main>
+    </div>
+    <script is:inline src="/panel.js" defer></script>
   </body>
 </html>
 
 <style is:global>
-  :root { color-scheme: light; }
-  body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; color: #1E2230; background: #F4F2EC; line-height: 1.5; }
-  a { color: #2F4FA3; }
-  .krye { background: #1E2230; color: #F3F1EA; padding: 12px 20px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: flex-start; }
-  .krye a { color: #F3F1EA; text-decoration: none; display: inline-flex; align-items: center; min-height: 36px; padding: 0 8px; border-radius: 6px; }
-  .krye a:hover, .krye a[aria-current='page'] { background: #353C57; }
-  .logo { font-weight: 700; font-size: 18px; }
-  .krye nav { display: flex; flex-wrap: wrap; gap: 8px 22px; flex: 1 1 520px; min-width: 0; }
-  .grupi { display: flex; flex-direction: column; }
-  .grupi-emri { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #A9B0C4; padding: 0 8px; }
-  .djathtas { display: flex; flex-direction: column; align-items: flex-end; font-size: 14px; margin-left: auto; }
-  .email { color: #A9B0C4; font-size: 12px; }
-  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 80px; }
-  h1 { margin: 0 0 4px; font-size: 28px; }
-  .shpjegim { margin: 0 0 20px; color: #4A5062; max-width: 70ch; }
-  .mesazh { padding: 12px 16px; border-radius: 8px; margin: 16px 0; }
-  .mesazh.ok { background: #E3F0E6; border: 1px solid #8DB79A; }
-  .mesazh.gabim { background: #FBE6E6; border: 1px solid #D98C8C; }
-  .karte { background: #fff; border: 1px solid #D9D5CB; border-radius: 10px; padding: 16px; margin: 0 0 14px; }
-  .rrjeta { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; }
-  .fusha { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
-  .fusha > span { font-weight: 600; font-size: 13px; color: #353C57; }
+  :root { color-scheme: light; --navy: #232B4A; --ink: #1E2230; --muted: #4A5062; --accent: #2F4FA3; --linja: #E0DCD2; --fundi: #F5F3EE; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 16px; color: var(--ink); background: var(--fundi); line-height: 1.55; }
+  a { color: var(--accent); }
+  .kalo { position: absolute; left: -9999px; top: 8px; background: #fff; padding: 8px 12px; border-radius: 6px; z-index: 10; }
+  .kalo:focus { left: 8px; }
+
+  /* Struktura */
+  .guaska { display: grid; grid-template-columns: 272px 1fr; min-height: 100vh; }
+  .anash { background: var(--navy); color: #F3F1EA; }
+  .anash details > summary { list-style: none; cursor: default; }
+  .anash details > summary::-webkit-details-marker { display: none; }
+  .anash .menu { position: sticky; top: 0; max-height: 100vh; overflow-y: auto; }
+  .menu-buton { display: none; }
+  .logo { display: flex; align-items: center; gap: 10px; padding: 20px 20px 14px; font-weight: 700; font-size: 18px; color: #fff; text-decoration: none; }
+  .logo-shenja { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 8px; background: #F7E58B; color: #3A3320; font-weight: 800; }
+  .anash nav { padding: 0 12px 24px; display: flex; flex-direction: column; gap: 4px; }
+  .anash nav a { display: flex; align-items: center; min-height: 40px; padding: 0 12px; border-radius: 8px; color: #E7E9F2; text-decoration: none; font-size: 15px; }
+  .anash nav a:hover { background: rgba(255, 255, 255, 0.08); }
+  .anash nav a[aria-current='page'] { background: #fff; color: var(--navy); font-weight: 600; }
+  .anash nav a:focus-visible { outline: 3px solid #F7E58B; outline-offset: 1px; }
+  .lidhje-kryesore { font-weight: 600; margin-bottom: 4px; }
+  .grupi { margin-top: 14px; display: flex; flex-direction: column; gap: 2px; }
+  .grupi-emri { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: #A9B0C4; padding: 0 12px 4px; }
+
+  .kolona { min-width: 0; }
+  .krye { display: flex; justify-content: flex-end; align-items: center; gap: 16px; padding: 14px 32px; border-bottom: 1px solid var(--linja); background: #fff; font-size: 14px; }
+  .perdoruesi { color: var(--muted); }
+  .hap-faqen { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid var(--accent); border-radius: 8px; text-decoration: none; font-weight: 600; }
+  main { max-width: 960px; padding: 32px 32px 96px; }
+
+  /* Tekst */
+  h1 { margin: 0 0 6px; font-size: 30px; line-height: 1.2; }
+  h2 { font-size: 20px; margin: 36px 0 12px; }
+  .shpjegim { margin: 0 0 22px; color: var(--muted); max-width: 68ch; font-size: 16px; }
+  .bosh-tekst, .bosh { color: var(--muted); }
+  .lexim { font-size: 14px; color: var(--muted); word-break: break-all; }
+
+  /* Mesazhe */
+  .mesazh { padding: 14px 18px; border-radius: 10px; margin: 0 0 18px; font-weight: 500; }
+  .mesazh.ok { background: #E3F0E6; border: 1px solid #8DB79A; color: #1E4A2A; }
+  .mesazh.gabim { background: #FBE6E6; border: 1px solid #D98C8C; color: #7A1E1E; }
+
+  /* Karta */
+  .karte { background: #fff; border: 1px solid var(--linja); border-radius: 14px; padding: 20px; margin: 0 0 14px; box-shadow: 0 1px 0 rgba(30, 34, 48, 0.03); }
+  .rrjeta { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px 20px; }
+  .fusha { display: flex; flex-direction: column; gap: 5px; font-size: 15px; }
+  .etik { font-weight: 600; font-size: 14px; color: #2A3150; }
+  .yll { color: #B33A3A; text-decoration: none; }
+  .ndihme { font-size: 13px; color: var(--muted); }
   .fusha input[type='text'], .fusha textarea, .fusha select, .fusha input[type='file'] {
-    font: inherit; padding: 9px 10px; min-height: 44px; border: 1px solid #B9B4A8; border-radius: 6px; background: #fff; width: 100%; box-sizing: border-box;
+    font: inherit; padding: 10px 12px; min-height: 46px; border: 1px solid #B9B4A8; border-radius: 8px; background: #fff; width: 100%; color: var(--ink);
   }
-  .fusha textarea { min-height: 96px; resize: vertical; }
-  .fusha input:focus-visible, .fusha textarea:focus-visible, .fusha select:focus-visible, .btn:focus-visible { outline: 3px solid #2F4FA3; outline-offset: 2px; }
-  .po-jo { flex-direction: row; align-items: center; gap: 10px; min-height: 44px; }
-  .po-jo input { width: 20px; height: 20px; }
-  .veprime { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
-  .btn { font: inherit; font-weight: 600; min-height: 44px; padding: 0 18px; border-radius: 8px; border: 1px solid #1E2230; background: #fff; color: #1E2230; cursor: pointer; }
-  .btn.kryesor { background: #1E2230; color: #fff; }
-  .btn.i-vogel { min-width: 44px; padding: 0 12px; }
-  .btn.rrezik { border-color: #B33A3A; color: #B33A3A; }
-  .btn.rrezik.i-plote { background: #B33A3A; color: #fff; }
-  details.fshi > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border: 1px solid #B33A3A; color: #B33A3A; border-radius: 8px; font-weight: 600; }
+  .fusha textarea { min-height: 110px; resize: vertical; }
+  .fusha input:focus-visible, .fusha textarea:focus-visible, .fusha select:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .po-jo { flex-direction: row; align-items: center; gap: 12px; min-height: 46px; }
+  .po-jo input { width: 22px; height: 22px; accent-color: var(--accent); }
+  .parapamje { margin-top: 6px; max-width: 220px; max-height: 140px; border-radius: 8px; border: 1px solid var(--linja); object-fit: cover; }
+
+  /* Butona */
+  .veprime { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 18px; }
+  .btn { font: inherit; font-weight: 600; min-height: 46px; padding: 0 20px; border-radius: 10px; border: 1px solid var(--ink); background: #fff; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; text-decoration: none; }
+  .btn:hover { background: #F0EDE4; }
+  .btn.kryesor { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.kryesor:hover { background: #254187; }
+  .btn.i-vogel { min-width: 46px; padding: 0 12px; justify-content: center; }
+  .btn:focus-visible, details > summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  details.fshi > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; min-height: 46px; padding: 0 18px; border: 1px solid #B33A3A; color: #B33A3A; border-radius: 10px; font-weight: 600; background: #fff; }
   details.fshi > summary::-webkit-details-marker { display: none; }
   details.fshi[open] > summary { display: none; }
-  details.fshi .konfirmo { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .lexim { font-size: 13px; color: #4A5062; word-break: break-all; }
-  h2 { font-size: 20px; margin: 32px 0 12px; }
-  .bosh { color: #4A5062; }
+  details.fshi .konfirmo { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn.rrezik { border-color: #B33A3A; background: #B33A3A; color: #fff; }
+  .btn.rrezik:hover { background: #8E2C2C; }
+
+  /* Lista e rreshtave (pa JavaScript: <details>) */
+  details.njesi { background: #fff; border: 1px solid var(--linja); border-radius: 14px; margin: 0 0 12px; }
+  details.njesi > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 14px; }
+  details.njesi > summary::-webkit-details-marker { display: none; }
+  details.njesi > summary:hover { background: #FAF9F5; }
+  details.njesi[open] > summary { border-bottom: 1px solid var(--linja); border-radius: 14px 14px 0 0; }
+  .nr { flex: none; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #E9EDF8; color: var(--accent); font-weight: 700; font-size: 14px; }
+  .titulli-njesise { flex: 1 1 auto; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
+  .titulli-njesise.bosh { font-weight: 400; font-style: italic; color: var(--muted); }
+  .shenja { flex: none; font-size: 13px; padding: 2px 10px; border-radius: 999px; background: #FFF4D6; color: #6A4E00; border: 1px solid #E8D28B; }
+  .shenja.mire { background: #E3F0E6; color: #1E4A2A; border-color: #8DB79A; }
+  .shigjeta { flex: none; color: var(--muted); transition: transform 0.2s; }
+  details.njesi[open] > summary .shigjeta { transform: rotate(180deg); }
+  details.njesi > form { padding: 20px; }
+  details.shto { margin: 0 0 22px; }
+  details.shto > summary { list-style: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 22px; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 600; }
+  details.shto > summary::-webkit-details-marker { display: none; }
+  details.shto[open] > summary { display: none; }
+  details.shto > form { margin-top: 0; }
+
+  /* Faqja kryesore */
   .kartat { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-  .kartat a { display: block; background: #fff; border: 1px solid #D9D5CB; border-radius: 10px; padding: 14px 16px; text-decoration: none; color: inherit; }
-  .kartat a:hover { border-color: #2F4FA3; }
+  .kartat a { display: block; background: #fff; border: 1px solid var(--linja); border-radius: 12px; padding: 14px 16px; text-decoration: none; color: inherit; }
+  .kartat a:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(47, 79, 163, 0.12); }
   .kartat strong { display: block; }
-  .kartat span { font-size: 13px; color: #4A5062; }
-  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #D9D5CB; border-radius: 10px; overflow: hidden; }
-  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #ECE9E1; font-size: 14px; vertical-align: middle; }
-  th { background: #F4F2EC; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: #4A5062; }
-  .kopje-url { font-family: ui-monospace, Consolas, monospace; font-size: 12px; word-break: break-all; }
+  .kartat span { font-size: 13px; color: var(--muted); }
+  .veprime-shpejta { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 8px; }
+  .lista-detyrash { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .lista-detyrash li { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid var(--linja); border-radius: 12px; padding: 12px 16px; }
+  .lista-detyrash .btn { min-height: 40px; }
+  .lista-detyrash.e-mbaruar li { background: #E3F0E6; border-color: #8DB79A; }
+
+  /* Skedarët */
+  .rrjeta-skedaresh { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+  .skedar { background: #fff; border: 1px solid var(--linja); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .skedar-pamja { aspect-ratio: 16 / 10; background: #F0EDE4; display: grid; place-items: center; font-weight: 700; color: var(--muted); letter-spacing: 0.06em; }
+  .skedar-pamja img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .skedar-trupi { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .skedar-url { font-family: ui-monospace, Consolas, monospace; font-size: 12px; word-break: break-all; color: var(--muted); }
+  .skedar-meta { font-size: 13px; color: var(--muted); }
+  .skedar .veprime { margin-top: 0; }
+  .skedar .btn, .skedar details.fshi > summary { min-height: 40px; padding: 0 14px; font-size: 14px; }
+
+  /* Telefon */
+  @media (max-width: 900px) {
+    .guaska { grid-template-columns: 1fr; }
+    .anash .menu { position: static; max-height: none; }
+    .anash details > summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding-right: 16px; }
+    .logo { padding: 14px 16px; }
+    .menu-buton { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 8px; font-size: 14px; }
+    .krye { padding: 10px 16px; justify-content: space-between; }
+    main { padding: 22px 16px 80px; }
+    h1 { font-size: 26px; }
+  }
+  @media (max-width: 900px) {
+    /* Menuja mbyllet vetë në telefon pa JavaScript: hapet vetëm kur e shtyp "Menuja" */
+    .anash .menu:not([open]) nav { display: none; }
+  }
 </style>

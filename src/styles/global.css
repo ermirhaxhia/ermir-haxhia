@@ -68,3 +68,7 @@ button:focus-visible {
     transition: none !important;
   }
 }
+
+/* Lidhja për tastierë: shfaqet vetëm kur merr fokus */
+.kalo { position: absolute; left: -9999px; top: 8px; z-index: 100; background: var(--color-paper); color: var(--color-ink); padding: 10px 14px; border-radius: 8px; border: 2px solid var(--color-accent); font-family: var(--font-mono); font-size: 13px; }
+.kalo:focus { left: 8px; }

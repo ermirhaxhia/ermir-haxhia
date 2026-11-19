@@ -5,11 +5,12 @@ import Admin from '../../layouts/Admin.astro';
 import { listoSkedaret } from '../../lib/admin';
 import { MAKS_NGARKIM, bajtetPerputhen, celesiValid, emriISigurt, llojiInline, shtesaELejuar, urlSkedari } from '../../lib/files';
 
-const MESAZHET: Record<string, string> = { ngarkuar: 'U ngarkua. Kopjo adresën më poshtë.', fshire: 'U fshi.' };
+const MESAZHET: Record<string, string> = { ngarkuar: 'U ngarkua me sukses. Adresa e tij është më poshtë, e shënuar.', fshire: 'U fshi.' };
 
 function ridrejto(q: string) {
   return Astro.redirect(`/admin/skedaret${q}`, 303);
 }
+const gabim = (tekst: string) => ridrejto('?g=' + encodeURIComponent(tekst));
 
 if (Astro.request.method === 'POST') {
   const f = await Astro.request.formData();
@@ -17,18 +18,18 @@ if (Astro.request.method === 'POST') {
 
   if (veprimi === 'ngarko') {
     const skedari = f.get('skedari');
-    if (!(skedari instanceof File) || skedari.size === 0) return ridrejto('?g=' + encodeURIComponent('Zgjidh një skedar.'));
-    if (skedari.size > MAKS_NGARKIM) return ridrejto('?g=' + encodeURIComponent('Skedari kalon 30 MB.'));
+    if (!(skedari instanceof File) || skedari.size === 0) return gabim('Zgjidh një skedar para se të shtypësh "Ngarko".');
+    if (skedari.size > MAKS_NGARKIM) return gabim('Skedari është më i madh se 30 MB.');
     const ext = shtesaELejuar(skedari.name);
-    if (!ext) return ridrejto('?g=' + encodeURIComponent('Lejohen vetëm png, jpg, webp, avif, gif dhe pdf.'));
+    if (!ext) return gabim('Lejohen vetëm foto (png, jpg, webp, avif, gif) dhe PDF.');
     const koka = new Uint8Array(await skedari.slice(0, 16).arrayBuffer());
-    if (!bajtetPerputhen(ext, koka)) return ridrejto('?g=' + encodeURIComponent(`Përmbajtja nuk përputhet me .${ext}.`));
+    if (!bajtetPerputhen(ext, koka)) return gabim(`Ky skedar nuk është vërtet .${ext} (përmbajtja nuk përputhet).`);
 
     const tani = new Date();
     const muaji = `${tani.getUTCFullYear()}-${String(tani.getUTCMonth() + 1).padStart(2, '0')}`;
     const rastesi = Array.from(crypto.getRandomValues(new Uint8Array(3)), (b) => b.toString(16).padStart(2, '0')).join('');
     const celesi = `public/uploads/${muaji}/${emriISigurt(skedari.name)}-${rastesi}.${ext}`;
-    if (!celesiValid(celesi)) return ridrejto('?g=' + encodeURIComponent('Emri i skedarit nuk është i vlefshëm.'));
+    if (!celesiValid(celesi)) return gabim('Emri i skedarit nuk është i vlefshëm.');
 
     await env.FILES.put(celesi, await skedari.arrayBuffer(), {
       httpMetadata: { contentType: llojiInline(celesi) ?? 'application/octet-stream' },
@@ -38,70 +39,67 @@ if (Astro.request.method === 'POST') {
 
   if (veprimi === 'fshi') {
     const celesi = String(f.get('_celesi') ?? '');
-    if (!celesiValid(celesi)) return ridrejto('?g=' + encodeURIComponent('Çelës i pavlefshëm.'));
+    if (!celesiValid(celesi)) return gabim('Çelës i pavlefshëm.');
     await env.FILES.delete(celesi);
     return ridrejto('?m=fshire');
   }
-  return ridrejto('?g=' + encodeURIComponent('Veprim i panjohur.'));
+  return gabim('Veprim i panjohur.');
 }
 
 const m = MESAZHET[Astro.url.searchParams.get('m') ?? ''];
 const g = Astro.url.searchParams.get('g')?.slice(0, 200);
-const rastNgarkimi = Astro.url.searchParams.get('k');
-const celesiINgarkuar = rastNgarkimi && celesiValid(rastNgarkimi) ? rastNgarkimi : null;
+const k = Astro.url.searchParams.get('k');
+const celesiINgarkuar = k && celesiValid(k) ? k : null;
 
 const skedaret = await listoSkedaret();
 const mb = (n: number) => (n >= 1024 * 1024 ? `${(n / 1024 / 1024).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+const eshteFoto = (celesi: string) => /\.(png|jpe?g|webp|avif|gif)$/i.test(celesi);
 ---
 <Admin titulli="Foto dhe PDF" aktiv="skedaret">
   <h1>Foto dhe PDF</h1>
   <p class="shpjegim">
-    Skedarët e ngarkuar këtu janë <strong>publikë</strong>: kushdo me adresën i hap. Mos ngarko PDF me të drejta autori.
-    Pasi të ngarkohet, kopjo adresën dhe ngjite te fusha "Pamja" ose "Skedari" te seksionet e tjera.
+    Ngarko këtu fotot për Dosjen dhe PDF-të. Pasi të ngarkohen, i zgjedh nga lista kur plotëson një punë ose një libër.
+    Skedarët janë <strong>publikë</strong>: kushdo me adresën i hap. Mos ngarko PDF me të drejta autori.
   </p>
   {m && <div class="mesazh ok" role="status">{m}</div>}
   {g && <div class="mesazh gabim" role="alert">{g}</div>}
-  {celesiINgarkuar && (
-    <div class="karte">
-      <span class="fusha"><span>Adresa e skedarit të ngarkuar</span></span>
-      <div class="kopje-url">{urlSkedari(celesiINgarkuar)}</div>
-    </div>
-  )}
 
-  <h2>Ngarko</h2>
+  <h2>Ngarko një skedar të ri</h2>
   <form method="post" enctype="multipart/form-data" class="karte">
     <label class="fusha" for="skedari">
-      <span>Skedari (png, jpg, webp, avif, gif, pdf; deri 30 MB)</span>
+      <span class="etik">Zgjidh skedarin</span>
       <input id="skedari" type="file" name="skedari" accept=".png,.jpg,.jpeg,.webp,.avif,.gif,.pdf" required />
+      <span class="ndihme">Foto (png, jpg, webp, avif, gif) ose PDF. Deri 30 MB.</span>
     </label>
     <div class="veprime"><button class="btn kryesor" type="submit" name="_veprimi" value="ngarko">Ngarko</button></div>
   </form>
 
-  <h2>Skedarët ({skedaret.length})</h2>
-  {skedaret.length === 0 ? <p class="bosh">Ende nuk ka skedarë.</p> : (
-    <table>
-      <thead><tr><th>Adresa</th><th>Madhësia</th><th>Ngarkuar</th><th></th></tr></thead>
-      <tbody>
-        {skedaret.map((s) => (
-          <tr>
-            <td class="kopje-url"><a href={urlSkedari(s.celesi)} target="_blank" rel="noopener">{urlSkedari(s.celesi)}</a></td>
-            <td>{mb(s.madhesia)}</td>
-            <td>{s.ngarkuar.toISOString().slice(0, 10)}</td>
-            <td>
-              <form method="post">
-                <input type="hidden" name="_celesi" value={s.celesi} />
-                <details class="fshi">
-                  <summary>Fshi</summary>
-                  <div class="konfirmo">
-                    <span>Të sigurt?</span>
-                    <button class="btn rrezik i-plote" type="submit" name="_veprimi" value="fshi">Po, fshi</button>
-                  </div>
-                </details>
-              </form>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+  <h2>Skedarët e ngarkuar ({skedaret.length})</h2>
+  {skedaret.length === 0 ? <p class="bosh-tekst">Ende nuk ke ngarkuar asgjë.</p> : (
+    <div class="rrjeta-skedaresh">
+      {skedaret.map((s) => (
+        <article class="skedar" style={s.celesi === celesiINgarkuar ? 'outline: 3px solid #2F4FA3' : undefined}>
+          <div class="skedar-pamja">
+            {eshteFoto(s.celesi) ? <img src={urlSkedari(s.celesi)} alt="" loading="lazy" /> : <span>PDF</span>}
+          </div>
+          <div class="skedar-trupi">
+            <div class="skedar-url">{urlSkedari(s.celesi)}</div>
+            <div class="skedar-meta">{mb(s.madhesia)} · {s.ngarkuar.toISOString().slice(0, 10)}</div>
+            <form method="post" class="veprime">
+              <input type="hidden" name="_celesi" value={s.celesi} />
+              <button class="btn" type="button" data-kopjo={urlSkedari(s.celesi)} hidden>Kopjo adresën</button>
+              <a class="btn" href={urlSkedari(s.celesi)} target="_blank" rel="noopener">Hape</a>
+              <details class="fshi">
+                <summary>Fshi</summary>
+                <div class="konfirmo">
+                  <span>Të sigurt?</span>
+                  <button class="btn rrezik" type="submit" name="_veprimi" value="fshi">Po, fshije</button>
+                </div>
+              </details>
+            </form>
+          </div>
+        </article>
+      ))}
+    </div>
   )}
 </Admin>

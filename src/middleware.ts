@@ -13,7 +13,7 @@ const KOKAT = {
   'X-Content-Type-Options': 'nosniff',
   'Referrer-Policy': 'same-origin',
   'Content-Security-Policy':
-    "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'none'; frame-ancestors 'none'; form-action 'self'; base-uri 'none'",
+    "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-ancestors 'none'; form-action 'self'; base-uri 'none'",
 } as const;
 
 const refuzo = (status: number, tekst: string) =>
@@ -31,7 +31,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return Response.redirect(`https://${DOMENI_KRYESOR}${pathname}${context.url.search}`, gjendja);
   }
 
-  if (pathname !== '/admin' && !pathname.startsWith('/admin/')) return next();
+  if (pathname !== '/admin' && !pathname.startsWith('/admin/')) {
+    // Faqet publike: koka bazë sigurie (nuk mbishkruhen ato që vendos vetë faqja).
+    const pergjigje = await next();
+    const kokat = new Headers(pergjigje.headers);
+    if (!kokat.has('X-Content-Type-Options')) kokat.set('X-Content-Type-Options', 'nosniff');
+    if (!kokat.has('Referrer-Policy')) kokat.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+    if (!kokat.has('X-Frame-Options')) kokat.set('X-Frame-Options', 'SAMEORIGIN');
+    return new Response(pergjigje.body, { status: pergjigje.status, statusText: pergjigje.statusText, headers: kokat });
+  }
 
   let email: string;
   const lokal = import.meta.env.DEV && (hostname === 'localhost' || hostname === '127.0.0.1');

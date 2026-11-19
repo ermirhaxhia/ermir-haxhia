@@ -1,14 +1,35 @@
 ---
 import Admin from '../../layouts/Admin.astro';
 import { entitetet } from '../../lib/admin-config';
-import { numrat } from '../../lib/admin';
+import { numrat, detyratEMbetura } from '../../lib/admin';
 
-const numrat_ = await numrat(entitetet);
+const [numrat_, detyrat] = await Promise.all([numrat(entitetet), detyratEMbetura()]);
 const grupet = [...new Set(entitetet.map((e) => e.grupi))];
 ---
-<Admin titulli="Ballina">
-  <h1>Paneli i faqes</h1>
-  <p class="shpjegim">Zgjidh çfarë do të ndryshosh. Ndryshimet shfaqen menjëherë në faqen publike. Nuk ka kthim prapa: nëse fshin diçka, humbet.</p>
+<Admin titulli="Ballina" aktiv="ballina">
+  <h1>Mirë se erdhe</h1>
+  <p class="shpjegim">
+    Këtu ndryshon çfarë shfaqet në faqen tënde. Çdo ndryshim del menjëherë në faqe, pa pritur.
+    Zgjidh një seksion nga menuja, ose nis nga këtu.
+  </p>
+
+  <div class="veprime-shpejta">
+    <a class="btn kryesor" href="/admin/projekte">＋ Shto projekt</a>
+    <a class="btn" href="/admin/skedaret">Ngarko foto ose PDF</a>
+    <a class="btn" href="/admin/faqe-fshehura">Krijo faqe të fshehur</a>
+    <a class="btn" href="/" target="_blank" rel="noopener">Shiko faqen ↗</a>
+  </div>
+
+  <h2>Çfarë mbetet për t'u plotësuar</h2>
+  {detyrat.length === 0 ? (
+    <ul class="lista-detyrash e-mbaruar"><li><span>Gjithçka është plotësuar. Faqja është e gatshme.</span></li></ul>
+  ) : (
+    <ul class="lista-detyrash">
+      {detyrat.map((d) => (
+        <li><span>{d.tekst}</span><a class="btn" href={d.lidhja}>Plotëso</a></li>
+      ))}
+    </ul>
+  )}
 
   {grupet.map((g) => (
     <section>
@@ -17,7 +38,7 @@ const grupet = [...new Set(entitetet.map((e) => e.grupi))];
         {entitetet.filter((e) => e.grupi === g).map((e) => (
           <a href={`/admin/${e.id}`}>
             <strong>{e.titulli}</strong>
-            <span>{e.njeRresht ? 'ndrysho' : `${numrat_[e.id]} rreshta`}</span>
+            <span>{e.njeRresht ? 'ndrysho tekstin' : `${numrat_[e.id]} ${numrat_[e.id] === 1 ? 'rresht' : 'rreshta'}`}</span>
           </a>
         ))}
       </div>
@@ -27,4 +48,11 @@ const grupet = [...new Set(entitetet.map((e) => e.grupi))];
     <h2>Skedarët</h2>
     <div class="kartat"><a href="/admin/skedaret"><strong>Foto dhe PDF</strong><span>ngarko, shiko, fshi</span></a></div>
   </section>
+
+  <h2>Mirë për t'u ditur</h2>
+  <ul class="shpjegim">
+    <li>Fshirja është përfundimtare: nuk ka kthim prapa. Para ndryshimeve të mëdha, kërkoji Claude një kopje rezervë të bazës.</li>
+    <li>Skedarët që ngarkon këtu janë publikë. Mos ngarko PDF me të drejta autori.</li>
+    <li>Faqet e fshehura hapen vetëm me linkun e plotë. Ndaje vetëm me ata që duhet.</li>
+  </ul>
 </Admin>

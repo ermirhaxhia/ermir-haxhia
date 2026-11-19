@@ -5,7 +5,7 @@ import { getProjektShkolle } from '../../../lib/db';
 
 const { slug } = Astro.params;
 const projekt = slug ? await getProjektShkolle(slug) : null;
-if (!projekt) return new Response(null, { status: 404 });
+if (!projekt) return Astro.rewrite('/404');
 ---
 <ProjektFaqe
   title={`${projekt.titulli} — Fletorja e Ermirit`}

@@ -13,8 +13,10 @@ interface Props {
 }
 const { f, vlera, opsione = [], vetemLexim = false, idPrefix } = Astro.props;
 const id = `${idPrefix}-${f.emri}`;
+const idNdihme = `${id}-n`;
 const v = vlera === null || vlera === undefined ? '' : String(vlera);
 const lista = f.lloji === 'zgjedhje' ? (f.opsione ?? []) : opsione;
+const eshteFoto = f.lloji === 'skedar' && /^\/f\/public\/.+\.(png|jpe?g|webp|avif|gif)$/i.test(v);
 ---
 {f.lloji === 'poJo' ? (
   <label class="fusha po-jo">
@@ -23,17 +25,17 @@ const lista = f.lloji === 'zgjedhje' ? (f.opsione ?? []) : opsione;
   </label>
 ) : vetemLexim ? (
   <div class="fusha">
-    <span>{f.etiketa}</span>
+    <span class="etik">{f.etiketa}</span>
     <div class="lexim">{v}</div>
   </div>
 ) : (
   <label class="fusha" for={id}>
-    <span>{f.etiketa}{f.kerkohet ? ' *' : ''}</span>
+    <span class="etik">{f.etiketa}{f.kerkohet ? <abbr title="e detyrueshme" class="yll"> *</abbr> : ''}</span>
     {f.lloji === 'tekstGjate' ? (
-      <textarea id={id} name={f.emri} maxlength="2000" required={f.kerkohet}>{v}</textarea>
+      <textarea id={id} name={f.emri} maxlength="2000" required={f.kerkohet} aria-describedby={f.ndihme ? idNdihme : undefined}>{v}</textarea>
     ) : f.lloji === 'zgjedhje' || f.lloji === 'burim' ? (
-      <select id={id} name={f.emri} required={f.kerkohet}>
-        {!f.kerkohet && <option value="" selected={v === ''}>—</option>}
+      <select id={id} name={f.emri} required={f.kerkohet} aria-describedby={f.ndihme ? idNdihme : undefined}>
+        {!f.kerkohet && <option value="" selected={v === ''}>— asgjë —</option>}
         {lista.map((o) => <option value={o.vlera} selected={o.vlera === v}>{o.etiketa}</option>)}
       </select>
     ) : (
@@ -42,12 +44,16 @@ const lista = f.lloji === 'zgjedhje' ? (f.opsione ?? []) : opsione;
         id={id}
         name={f.emri}
         value={v}
+        placeholder={f.shembull}
         maxlength={f.lloji === 'url' || f.lloji === 'skedar' ? 500 : 300}
         required={f.kerkohet}
         list={f.lloji === 'skedar' ? 'skedaret-e-ngarkuar' : undefined}
         autocomplete="off"
         inputmode={f.lloji === 'url' || f.lloji === 'skedar' ? 'url' : undefined}
+        aria-describedby={f.ndihme ? idNdihme : undefined}
       />
     )}
+    {eshteFoto && <img class="parapamje" src={v} alt="" loading="lazy" />}
+    {f.ndihme && <span class="ndihme" id={idNdihme}>{f.ndihme}</span>}
   </label>
 )}

@@ -6,7 +6,7 @@ import { getFaqeFshehur } from '../../lib/db';
 
 const { kodi } = Astro.params;
 const faqe = kodi ? await getFaqeFshehur(kodi) : null;
-if (!faqe) return new Response(null, { status: 404, headers: { 'X-Robots-Tag': 'noindex, nofollow' } });
+if (!faqe) return Astro.rewrite('/404');
 
 // Në SSR kokat vendosen këtu (nuk varemi nga public/_headers).
 Astro.response.headers.set('X-Robots-Tag', 'noindex, nofollow');
