@@ -90,7 +90,10 @@ const libra = z.object({
 
 const faqeTeFshehur = z.array(
   z.object({
-    kodi: z.string().min(12, 'Kodi duhet të ketë të paktën 12 shenja'),
+    kodi: z
+      .string()
+      .min(12, 'Kodi duhet të ketë të paktën 12 shenja')
+      .regex(/^[a-z0-9]+$/, 'Kodi lejon vetëm shkronja të vogla (a-z) dhe shifra'),
     titulli: z.string(),
     pershkrimi: tekst,
     shiny_url: tekst,
@@ -105,6 +108,9 @@ export const lendet = shkolle.parse(shkolleRaw);
 export const dosjaPunet = dosja.parse(dosjaRaw);
 export const librat = libra.parse(libraRaw);
 export const faqetFshehura = faqeTeFshehur.parse(fsheharRaw);
+if (new Set(faqetFshehura.map((f) => f.kodi)).size !== faqetFshehura.length) {
+  throw new Error("content/faqe-te-fshehura.json: dy faqe kanë të njëjtin kod");
+}
 
 // content/shkolle/<slug>.json
 const detajeRaw = import.meta.glob('../../content/shkolle/*.json', {
