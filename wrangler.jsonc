@@ -1,6 +1,6 @@
 {
-  // Worker-i i faqes. Emri është i ndryshëm nga projektet e tjera në llogarinë Cloudflare.
-  "name": "ermir-haxhia-site",
+  // Worker-i i faqes (përputhet me projektin te Cloudflare që ndërton nga GitHub).
+  "name": "ermir-haxhia",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "compatibility_date": "2026-11-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
