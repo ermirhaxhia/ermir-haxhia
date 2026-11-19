@@ -43,7 +43,7 @@
 - PDF me të drejta autori nuk dalin publike (shih `arkitektura.md`, seksioni 5).
 - **Përfundon kur:** një foto dhe një PDF provë ngarkohen lokalisht dhe shfaqen në faqe.
 
-## M5d — Paneli admin (`/admin`) me Cloudflare Access
+## M5d — Paneli admin (`/admin`) me Cloudflare Access (ndërtuar dhe provuar lokalisht; mbetet aktivizimi i Access, shih `access.md`)
 - Formularë për projekte, libra, punë të dosjes, kontakt dhe faqe të fshehura; ngarkim skedarësh në R2; validim në server.
 - Hyrje vetëm për Ermirin: Cloudflare Access (email + kod një-përdorimësh) mbi `/admin/*` dhe API-n e tij. Kodi i panelit duhet të verifikojë edhe vetë kokën e Access, jo vetëm të mbështetet te rrjeti.
 - `/admin` jo në sitemap, me `noindex`.
@@ -59,7 +59,7 @@
 
 ## M8 — Publikimi (vetëm me konfirmim nga Ermiri)
 - Krijo te Cloudflare: D1, bucket R2 dhe Access për `/admin` (Ermiri i krijon ose i miraton).
-- Lidh repo-n me Cloudflare, deploy (fillimisht në `*.workers.dev`), pastaj domeni `www.ermir-haxhia.com` dhe ridrejtimi i domenit bosh.
+- Lidh repo-n me Cloudflare, deploy (fillimisht në `*.workers.dev`), pastaj domeni `www.ermirhaxhia.com` dhe ridrejtimi i domenit bosh.
 - **Përfundon kur:** faqja hapet në domenin real me HTTPS dhe Ermiri e ka konfirmuar.
 
 ## M9 — Pas publikimit

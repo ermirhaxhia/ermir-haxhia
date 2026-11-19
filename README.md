@@ -1,8 +1,8 @@
-# Fletorja e Ermirit — faqja personale (ermir-haxhia.com)
+# Fletorja e Ermirit — faqja personale (ermirhaxhia.com)
 
 Ky folder është **paketa e dorëzimit** për ndërtimin e faqes. Dizajni dhe vendimet kryesore janë bërë në bisedë me Claude (chat). Ndërtimi i kodit të vërtetë do ta bëjë **Claude Code**, duke u nisur nga ky folder. Çdo gjë që duhet për të filluar është këtu: dizajni, përmbajtja bosh, arkitektura, plani me hapa dhe pyetjet e hapura.
 
-> Data e paketës: 18 nëntor 2026. Domeni i synuar: **www.ermir-haxhia.com**.
+> Data e paketës: 18 nëntor 2026. Domeni i synuar: **www.ermirhaxhia.com**.
 
 ---
 

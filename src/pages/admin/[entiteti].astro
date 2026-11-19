@@ -1,0 +1,123 @@
+---
+// Faqja e përgjithshme e panelit: lista + formularët e një entiteti (shih lib/admin-config.ts).
+import Admin from '../../layouts/Admin.astro';
+import AdminFusha from '../../components/AdminFusha.astro';
+import { entitetSipasId } from '../../lib/admin-config';
+import {
+  lexoRreshtat, opsioneBurimi, lexoFushat, lexoCelesin, shto, ruaj, fshi, leviz, listoSkedaret,
+  type Perfundim,
+} from '../../lib/admin';
+import { urlSkedari } from '../../lib/files';
+
+const e = entitetSipasId(Astro.params.entiteti ?? '');
+if (!e) return new Response('Nuk u gjet', { status: 404 });
+const baza = `/admin/${e.id}`;
+
+const MESAZHET: Record<string, string> = {
+  shtuar: 'U shtua.', ruajtur: 'U ruajt.', fshire: 'U fshi.', levizur: 'Rendi u ndryshua.',
+};
+
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const veprimi = String(f.get('_veprimi') ?? '');
+  let rez: Perfundim = { ok: false, gabim: 'Veprim i panjohur.' };
+  let mesazhi = '';
+  const celesi = lexoCelesin(e, f.get('_celesi'));
+
+  if (veprimi === 'shto') {
+    const v = lexoFushat(e, f, { shtim: true });
+    rez = v.ok ? await shto(e, v.vlerat) : v;
+    mesazhi = 'shtuar';
+  } else if (veprimi === 'ruaj' && celesi !== null) {
+    const v = lexoFushat(e, f, { shtim: false });
+    rez = v.ok ? await ruaj(e, celesi, v.vlerat) : v;
+    mesazhi = 'ruajtur';
+  } else if (veprimi === 'fshi' && celesi !== null) {
+    rez = await fshi(e, celesi);
+    mesazhi = 'fshire';
+  } else if ((veprimi === 'lart' || veprimi === 'poshte') && celesi !== null) {
+    rez = await leviz(e, celesi, veprimi);
+    mesazhi = 'levizur';
+  }
+  const q = rez.ok ? `?m=${mesazhi}` : `?g=${encodeURIComponent(rez.gabim.slice(0, 200))}`;
+  return Astro.redirect(baza + q, 303);
+}
+
+const m = MESAZHET[Astro.url.searchParams.get('m') ?? ''];
+const g = Astro.url.searchParams.get('g')?.slice(0, 200);
+
+const rreshtat = await lexoRreshtat(e);
+const opsioneTeBurimit: Record<string, { vlera: string; etiketa: string }[]> = {};
+for (const f of e.fushat) if (f.lloji === 'burim') opsioneTeBurimit[f.emri] = await opsioneBurimi(f);
+const kaSkedar = e.fushat.some((f) => f.lloji === 'skedar');
+const skedaret = kaSkedar ? await listoSkedaret() : [];
+const celesiIRreshtit = (r: Record<string, string | number | null>) => String(r[e.celesi]);
+---
+<Admin titulli={e.titulli} aktiv={e.id}>
+  <h1>{e.titulli}</h1>
+  {e.pershkrimi && <p class="shpjegim">{e.pershkrimi}</p>}
+  {m && <div class="mesazh ok" role="status">{m}</div>}
+  {g && <div class="mesazh gabim" role="alert">{g}</div>}
+
+  {kaSkedar && (
+    <datalist id="skedaret-e-ngarkuar">
+      {skedaret.map((s) => <option value={urlSkedari(s.celesi)} />)}
+    </datalist>
+  )}
+
+  {rreshtat.length === 0 && !e.njeRresht && <p class="bosh">Ende nuk ka asnjë rresht. Shto të parin më poshtë.</p>}
+
+  {rreshtat.map((r, i) => (
+    <form method="post" class="karte">
+      <input type="hidden" name="_celesi" value={celesiIRreshtit(r)} />
+      <div class="rrjeta">
+        {e.fushat.map((f) => (
+          <AdminFusha
+            f={f}
+            vlera={r[f.emri]}
+            opsione={opsioneTeBurimit[f.emri]}
+            vetemLexim={!!f.vetemShtim}
+            idPrefix={`r${i}`}
+          />
+        ))}
+      </div>
+      {e.gjeneroKod && (
+        <p class="lexim">Linku: <a href={`/p/${r.kodi}`} target="_blank" rel="noopener">/p/{r.kodi}</a></p>
+      )}
+      <div class="veprime">
+        <button class="btn kryesor" type="submit" name="_veprimi" value="ruaj">Ruaj</button>
+        {e.renditja && (
+          <>
+            <button class="btn i-vogel" type="submit" name="_veprimi" value="lart" aria-label="Lart" title="Lart">↑</button>
+            <button class="btn i-vogel" type="submit" name="_veprimi" value="poshte" aria-label="Poshtë" title="Poshtë">↓</button>
+          </>
+        )}
+        {!e.njeRresht && (
+          <details class="fshi">
+            <summary>Fshi</summary>
+            <div class="konfirmo">
+              <span>Të sigurt? Nuk kthehet.</span>
+              <button class="btn rrezik i-plote" type="submit" name="_veprimi" value="fshi">Po, fshi</button>
+            </div>
+          </details>
+        )}
+      </div>
+    </form>
+  ))}
+
+  {!e.njeRresht && (
+    <>
+      <h2>Shto të ri</h2>
+      <form method="post" class="karte">
+        <div class="rrjeta">
+          {e.fushat.map((f) => (
+            <AdminFusha f={f} vlera="" opsione={opsioneTeBurimit[f.emri]} idPrefix="re" />
+          ))}
+        </div>
+        <div class="veprime">
+          <button class="btn kryesor" type="submit" name="_veprimi" value="shto">Shto</button>
+        </div>
+      </form>
+    </>
+  )}
+</Admin>

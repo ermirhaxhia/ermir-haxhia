@@ -48,3 +48,43 @@ export function contentRange(madhesia: number, r: R2Range | undefined): string |
   }
   return `bytes ${fillimi}-${fundi}/${madhesia}`;
 }
+
+// ---- Ngarkimi nga paneli ----
+
+export const MAKS_NGARKIM = 30 * 1024 * 1024; // 30 MB
+
+const hex = (b: Uint8Array, nga: number, tek: number) => Array.from(b.slice(nga, tek), (x) => x.toString(16).padStart(2, '0')).join('');
+const tekstBajte = (b: Uint8Array, nga: number, tek: number) => String.fromCharCode(...b.slice(nga, tek));
+
+/** Shtesa e lejuar e një emri skedari, ose null. */
+export function shtesaELejuar(emri: string): string | null {
+  const ext = emri.split('.').pop()?.toLowerCase() ?? '';
+  return ext in LLOJET_INLINE ? ext : null;
+}
+
+/** Kontrollon që bajtet e para të përputhen me shtesën (një .exe i riemërtuar .pdf refuzohet). */
+export function bajtetPerputhen(ext: string, b: Uint8Array): boolean {
+  switch (ext) {
+    case 'png': return hex(b, 0, 8) === '89504e470d0a1a0a';
+    case 'jpg':
+    case 'jpeg': return hex(b, 0, 3) === 'ffd8ff';
+    case 'gif': return tekstBajte(b, 0, 4) === 'GIF8';
+    case 'webp': return tekstBajte(b, 0, 4) === 'RIFF' && tekstBajte(b, 8, 12) === 'WEBP';
+    case 'avif': return tekstBajte(b, 4, 8) === 'ftyp' && ['avif', 'avis'].includes(tekstBajte(b, 8, 12));
+    case 'pdf': return tekstBajte(b, 0, 5) === '%PDF-';
+    default: return false;
+  }
+}
+
+/** Emër i sigurt dhe i lexueshëm për çelësin: a-z, 0-9 dhe viza. */
+export function emriISigurt(emri: string): string {
+  const baza = emri.replace(/\.[^.]*$/, '');
+  const pastruar = baza
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 60);
+  return pastruar || 'skedar';
+}

@@ -9,6 +9,13 @@
     "directory": "./dist"
   },
   "observability": { "enabled": true },
+
+  // Domeni (blerë te Cloudflare Registrar). Adresa kryesore është www; ermirhaxhia.com ridrejtohet
+  // te www nga src/middleware.ts. Adresa *.workers.dev mbetet aktive.
+  "routes": [
+    { "pattern": "www.ermirhaxhia.com", "custom_domain": true },
+    { "pattern": "ermirhaxhia.com", "custom_domain": true }
+  ],
   // Skedarët (foto, PDF). Vetëm çelësat që fillojnë me "public/" shërbehen publikisht (shih src/pages/f/).
   "r2_buckets": [{ "binding": "FILES", "bucket_name": "ermir-haxhia-files" }],
 

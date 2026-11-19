@@ -16,7 +16,7 @@
 | Shiny në shinyapps.io, i ngulitur me iframe | Cloudflare nuk ekzekuton R |
 
 ## Pyetje të hapura për Ermirin
-1. A është blerë domeni `ermir-haxhia.com`? Te kush? (ndikon në DNS/transfer)
+1. ~~A është blerë domeni?~~ Po: `ermirhaxhia.com`, blerë te Cloudflare Registrar më 19 nëntor 2026 (1 vit, rinovim automatik, $11.17).
 2. URL e LinkedIn dhe email-i publik.
 3. Emri i lëndës dhe pedagogut për projektin në R; data e saktë e dorëzimit.
 4. A është publikuar aplikacioni Shiny? Cila është adresa?

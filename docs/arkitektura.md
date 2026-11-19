@@ -26,7 +26,7 @@ Dizajni mbetet përmbajtje me shumë tekst dhe pak JS në shfletues. Pjesët din
 Shih tabelën te `README.md`. Rregulla:
 
 - URL të vogla, pa shkronja të mëdha, pa shenja shqipe në rrugë (`/fletorja/shkolle`, jo `/fletorja/shkollë`).
-- `www.ermir-haxhia.com` dhe `ermir-haxhia.com`: njëra ridrejton te tjetra (zgjidh një kanonike).
+- `www.ermirhaxhia.com` dhe `ermirhaxhia.com`: njëra ridrejton te tjetra (zgjidh një kanonike).
 - `lang="sq"` në `<html>`; `<title>` unik për çdo faqe.
 
 ## 3. Hostimi në Cloudflare
@@ -49,7 +49,7 @@ Shih tabelën te `README.md`. Rregulla:
 ## 5. Librat dhe PDF-të
 
 - Pak libra (Ermiri thotë 6–7), nga disa MB deri 30 MB secili. **Nuk na duhet bazë të dhënash.** Lista e librave është `content/libra.json`.
-- Skedarët PDF: ose në `public/` (nëse janë të vegjël dhe me licencë të hapur), ose në **Cloudflare R2** (10 GB falas, pa tarifa shkarkimi), me nën-domen publik (p.sh. `files.ermir-haxhia.com`) dhe lidhje nga `skedari`.
+- Skedarët PDF: ose në `public/` (nëse janë të vegjël dhe me licencë të hapur), ose në **Cloudflare R2** (10 GB falas, pa tarifa shkarkimi), me nën-domen publik (p.sh. `files.ermirhaxhia.com`) dhe lidhje nga `skedari`.
 - **D1 nuk përdoret për PDF.** Një rresht ose BLOB në D1 kufizohet në 2 MB, dhe baza falas në 500 MB.
 - **Të drejtat e autorit:** në faqe publike hidhen vetëm libra me licencë të hapur (p.sh. "R for Data Science"). Për të tjerët shfaqen vetëm titulli, autori dhe statusi.
 

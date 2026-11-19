@@ -1,0 +1,53 @@
+---
+// Një fushë e formularit të panelit, sipas llojit të saj.
+import type { Fusha } from '../lib/admin-config';
+
+interface Props {
+  f: Fusha;
+  vlera: string | number | null | undefined;
+  /** Opsionet e fushave "burim" (të ngarkuara nga faqja) */
+  opsione?: { vlera: string; etiketa: string }[];
+  /** Vetëm lexim (p.sh. slug-u pasi është krijuar) */
+  vetemLexim?: boolean;
+  idPrefix: string;
+}
+const { f, vlera, opsione = [], vetemLexim = false, idPrefix } = Astro.props;
+const id = `${idPrefix}-${f.emri}`;
+const v = vlera === null || vlera === undefined ? '' : String(vlera);
+const lista = f.lloji === 'zgjedhje' ? (f.opsione ?? []) : opsione;
+---
+{f.lloji === 'poJo' ? (
+  <label class="fusha po-jo">
+    <input type="checkbox" name={f.emri} checked={v === '1'} />
+    <span>{f.etiketa}</span>
+  </label>
+) : vetemLexim ? (
+  <div class="fusha">
+    <span>{f.etiketa}</span>
+    <div class="lexim">{v}</div>
+  </div>
+) : (
+  <label class="fusha" for={id}>
+    <span>{f.etiketa}{f.kerkohet ? ' *' : ''}</span>
+    {f.lloji === 'tekstGjate' ? (
+      <textarea id={id} name={f.emri} maxlength="2000" required={f.kerkohet}>{v}</textarea>
+    ) : f.lloji === 'zgjedhje' || f.lloji === 'burim' ? (
+      <select id={id} name={f.emri} required={f.kerkohet}>
+        {!f.kerkohet && <option value="" selected={v === ''}>—</option>}
+        {lista.map((o) => <option value={o.vlera} selected={o.vlera === v}>{o.etiketa}</option>)}
+      </select>
+    ) : (
+      <input
+        type="text"
+        id={id}
+        name={f.emri}
+        value={v}
+        maxlength={f.lloji === 'url' || f.lloji === 'skedar' ? 500 : 300}
+        required={f.kerkohet}
+        list={f.lloji === 'skedar' ? 'skedaret-e-ngarkuar' : undefined}
+        autocomplete="off"
+        inputmode={f.lloji === 'url' || f.lloji === 'skedar' ? 'url' : undefined}
+      />
+    )}
+  </label>
+)}

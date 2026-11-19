@@ -1,6 +1,6 @@
 # CLAUDE.md — udhëzime për Claude Code
 
-Projekti: faqja personale e Ermir Haxhias (www.ermir-haxhia.com). Lexo `README.md` për përshkrimin e plotë.
+Projekti: faqja personale e Ermir Haxhias (www.ermirhaxhia.com). Lexo `README.md` për përshkrimin e plotë.
 
 ## Burimet e së vërtetës
 
